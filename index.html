@@ -1,0 +1,2733 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Інтерактивна лабораторія: Теорія множин, відношення та комбінаторика (ДУІКТ)</title>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-border: #24324f;
+      --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #a855f7;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --code-font: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.5;
+      padding: 24px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 10px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: var(--card-bg);
+      border-color: var(--card-border);
+      border-bottom-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 8px;
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    button.btn {
+      background: #202b45;
+      color: var(--text);
+      border: 1px solid #334366;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+
+    button.btn:hover {
+      background: #2a3a5d;
+      border-color: var(--accent);
+    }
+
+    button.btn.active-op {
+      background: var(--accent);
+      color: #0b0f19;
+      font-weight: 700;
+      border-color: var(--accent);
+    }
+
+    input, select {
+      background: #0f1626;
+      border: 1px solid #2d3c5e;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      width: 100%;
+      margin-top: 4px;
+      margin-bottom: 12px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .formula-box {
+      background: #0d121f;
+      border: 1px solid #263352;
+      border-radius: 8px;
+      padding: 14px;
+      font-family: var(--code-font);
+      font-size: 0.95rem;
+      color: var(--accent);
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+
+    .res-metric {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 8px 0;
+      font-family: var(--code-font);
+    }
+
+    .venn-svg {
+      width: 100%;
+      height: 250px;
+      background: #090d16;
+      border-radius: 8px;
+      border: 1px solid #24324f;
+      display: block;
+    }
+
+    /* Operator Symbol & Mnemonic Card */
+    .op-symbol-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(21, 29, 48, 0.95) 0%, rgba(13, 18, 31, 0.98) 100%);
+      border: 1px solid var(--card-border);
+      border-left: 5px solid var(--accent);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      transition: border-left-color 0.3s ease;
+    }
+    .symbol-badge {
+      min-width: 68px;
+      height: 68px;
+      background: rgba(56, 189, 248, 0.15);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      font-weight: 800;
+      font-family: var(--code-font);
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.35);
+      user-select: none;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    .op-details { flex: 1; min-width: 0; }
+    .op-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    .op-formula {
+      font-family: var(--code-font);
+      color: #93c5fd;
+      font-size: 0.95rem;
+      margin: 4px 0 6px 0;
+    }
+    .op-mnemonic {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Venn SVG Regions & Interactions */
+    .venn-region {
+      transition: fill 0.25s ease, stroke 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+      cursor: pointer;
+    }
+    .venn-region:hover {
+      opacity: 0.9;
+    }
+
+    .venn-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 10px;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: #0d121f;
+      border: 1px solid #24324f;
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .btn-sym {
+      display: inline-block;
+      font-weight: 800;
+      font-family: var(--code-font);
+      margin-right: 6px;
+      color: var(--accent);
+      font-size: 1.05rem;
+    }
+    .btn.active-op .btn-sym {
+      color: #0b0f19;
+    }
+
+    .btn-sm {
+      padding: 5px 10px;
+      font-size: 0.8rem;
+    }
+
+    .result-highlight-card {
+      background: #0d121f;
+      border: 1px solid #263352;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .elem-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      font-family: var(--code-font);
+      border: 1px solid transparent;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      from { transform: scale(0.7); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .elem-pill-a {
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+    .elem-pill-inter {
+      background: rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+    .elem-pill-b {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+    .elem-pill-outside {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+    .elem-pill-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.45);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+
+    .subset-checker-box {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      background: #0d1424;
+      border: 1px solid #24324f;
+      font-size: 0.85rem;
+      line-height: 1.55;
+    }
+
+
+    /* Matrix Table & Interactive Pairing */
+    .matrix-table {
+      border-collapse: collapse;
+      margin: 12px 0 8px 0;
+    }
+    .matrix-table th, .matrix-table td {
+      border: 1px solid #2d3c5e;
+      width: 48px;
+      height: 48px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 700;
+      user-select: none;
+      transition: all 0.15s ease;
+      font-family: var(--code-font);
+      font-size: 1rem;
+      position: relative;
+    }
+    .matrix-table th {
+      background: #151d30;
+      color: var(--accent);
+      font-size: 0.9rem;
+    }
+    .matrix-table td.val-1 {
+      background: rgba(56, 189, 248, 0.22);
+      color: #38bdf8;
+      box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.2);
+    }
+    .matrix-table td.val-0 {
+      background: #090e1a;
+      color: #475569;
+    }
+    .matrix-table td.diag-cell {
+      border: 2px solid rgba(56, 189, 248, 0.55) !important;
+    }
+    .matrix-table td.diag-cell::after {
+      content: '•';
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      font-size: 10px;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+    .matrix-table td.pair-hover {
+      box-shadow: inset 0 0 0 2px #f59e0b !important;
+      background: rgba(245, 158, 11, 0.25) !important;
+      color: #fff !important;
+    }
+
+    .matrix-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0 14px 0;
+    }
+
+    /* Property Diagnostic Cards */
+    .prop-diagnostics-grid {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .prop-card {
+      background: #0d1424;
+      border: 1px solid #233352;
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      transition: border-color 0.2s;
+    }
+    .prop-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .prop-card-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .prop-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    .prop-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .prop-true { 
+      background: rgba(16, 185, 129, 0.18); 
+      color: #34d399; 
+      border-color: rgba(16, 185, 129, 0.4); 
+    }
+    .prop-false { 
+      background: rgba(239, 68, 68, 0.18); 
+      color: #f87171; 
+      border-color: rgba(239, 68, 68, 0.4); 
+    }
+
+    /* Factor Set & Cluster Badges */
+    .factor-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-family: var(--code-font);
+      font-size: 0.85rem;
+      border: 1px solid transparent;
+      margin: 3px;
+    }
+
+
+    .samples-stream {
+      background: #0d121f;
+      border: 1px solid #24324f;
+      border-radius: 8px;
+      padding: 12px;
+      max-height: 180px;
+      overflow-y: auto;
+      font-family: var(--code-font);
+      font-size: 0.85rem;
+      color: #93c5fd;
+      line-height: 1.7;
+    }
+    .sample-pill {
+      display: inline-block;
+      background: #1a253d;
+      border: 1px solid #334366;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin: 3px;
+    }
+
+    /* Pair Pills for Relation Elements List */
+    .pair-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 6px;
+      font-family: var(--code-font);
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .pair-pill:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      filter: brightness(1.25);
+    }
+    .pair-pill-loop {
+      background: rgba(56, 189, 248, 0.16);
+      border-color: rgba(56, 189, 248, 0.45);
+      color: #38bdf8;
+    }
+    .pair-pill-symm {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    .pair-pill-dir {
+      background: rgba(192, 132, 252, 0.16);
+      border-color: rgba(192, 132, 252, 0.45);
+      color: #c084fc;
+    }
+
+    /* Combinatorics Decision Flowchart & Wizard */
+    .flow-tree-box {
+      background: #0b1120;
+      border: 1px solid #233454;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .flow-card {
+      background: #0e1629;
+      border: 1px solid #243556;
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .flow-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
+    }
+    .flow-card.active-flow {
+      border-color: #38bdf8 !important;
+      background: rgba(56, 189, 248, 0.14) !important;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.4) !important;
+    }
+    .flow-badge-yes {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.2);
+      color: #34d399;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .flow-badge-no {
+      display: inline-block;
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .wizard-chip {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid #233454;
+      background: #090e1a;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .wizard-chip:hover {
+      border-color: #38bdf8;
+      color: #fff;
+    }
+    .wizard-chip.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+    }
+    .comb-summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+      margin-top: 10px;
+    }
+    .comb-summary-table th {
+      background: #141f36;
+      color: #38bdf8;
+      padding: 7px 10px;
+      border: 1px solid #243556;
+      text-align: left;
+    }
+    .comb-summary-table td {
+      padding: 7px 10px;
+      border: 1px solid #1c2a44;
+      background: #090e1a;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .comb-summary-table tr:hover td {
+      background: #10192e;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div>
+      <h1>📐 Лабораторія дискретного аналізу <span class="badge">ДУІКТ • 2 курс</span></h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Інтерактивне моделювання: Множини, Бінарні відношення, Комбінаторні простори</p>
+    </div>
+    <div>
+      <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: var(--success); border-color: rgba(16, 185, 129, 0.3);">
+        ● Модель активна
+      </span>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="switchTab('sets')">⭕ 1. Множини та Ейлер-Венн</button>
+    <button class="tab-btn" onclick="switchTab('relations')">🕸️ 2. Бінарні відношення та Графи</button>
+    <button class="tab-btn" onclick="switchTab('combinatorics')">🎲 3. Комбінаторний калькулятор</button>
+  </nav>
+
+  <!-- TAB 1: SETS -->
+  <section id="tab-sets" class="tab-content active">
+    <!-- Top Operator Symbol & Mnemonic Banner -->
+    <div class="op-symbol-card" id="op-symbol-banner" style="margin-bottom: 20px;">
+      <div class="symbol-badge" id="op-symbol-icon">∪</div>
+      <div class="op-details">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <h2 class="op-title" id="op-symbol-name">Об'єднання множин (Union)</h2>
+          <span class="badge" id="op-logic-badge" style="background: rgba(56, 189, 248, 0.2); color: var(--accent);">Логічне «АБО» (OR / ∨)</span>
+        </div>
+        <div class="op-formula" id="op-symbol-formal">A ∪ B = { x ∈ U | x ∈ A ∨ x ∈ B }</div>
+        <div class="op-mnemonic" id="op-symbol-mnemonic">
+          💡 <b>Мнемоніка:</b> «Чаша» відкрита догори ∪ — збираємо та насипаємо елементи з ОБОХ кіл разом!
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Left Column: Controls, Presets, and Subset Check -->
+      <div class="card">
+        <div class="card-title">⚙️ Вхідні множини та Універсум U</div>
+        <label>Універсум U (базовий простір, через кому):</label>
+        <input type="text" id="setU-input" value="0, 1, 2, 3, 4, 5, 6, 7, 8, 9" oninput="updateSets()">
+
+        <label>Множина A (через кому):</label>
+        <input type="text" id="setA-input" value="1, 2, 3, 4, 5" oninput="updateSets()">
+        
+        <label>Множина B (через кому):</label>
+        <input type="text" id="setB-input" value="4, 5, 6, 7, 8" oninput="updateSets()">
+
+        <!-- Live Formatted Sets Elements Display -->
+        <div style="background: #090e1a; border: 1px solid #1c273e; border-radius: 6px; padding: 8px 12px; margin-top: 10px; font-family: var(--code-font); font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px;">
+          <div><b style="color: #38bdf8;">Множина A =</b> <span id="set-a-display">{ 1, 2, 3, 4, 5 }</span> <span style="color: var(--text-muted); font-size: 0.75rem;">(|A| = <span id="set-a-len">5</span>)</span></div>
+          <div><b style="color: #a855f7;">Множина B =</b> <span id="set-b-display">{ 4, 5, 6, 7, 8 }</span> <span style="color: var(--text-muted); font-size: 0.75rem;">(|B| = <span id="set-b-len">5</span>)</span></div>
+          <div style="color: var(--text-muted); font-size: 0.78rem; border-top: 1px solid #1c273e; padding-top: 4px; margin-top: 2px;">
+            <b style="color: #f59e0b;">Універсум U =</b> <span id="set-u-display">{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }</span> <span style="color: var(--text-muted); font-size: 0.75rem;">(|U| = <span id="set-u-len">10</span>)</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 10px; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-muted);">Швидкі навчальні пресети:</div>
+        <div class="btn-group" style="margin-top: 4px; margin-bottom: 16px;">
+          <button class="btn btn-sm" onclick="applySetPreset('intersect')">Типовий перетин</button>
+          <button class="btn btn-sm" onclick="applySetPreset('disjoint')">Диз'юнктні (A ∩ B = ∅)</button>
+          <button class="btn btn-sm" onclick="applySetPreset('subset')">Власна підмножина (A ⊂ B)</button>
+          <button class="btn btn-sm" onclick="applySetPreset('equal')">Рівні (A = B)</button>
+          <button class="btn btn-sm" onclick="applySetPreset('letters')">🔤 Букви (a..g)</button>
+          <button class="btn btn-sm" onclick="applySetPreset('largeNums')">🔢 Числа &gt; 9</button>
+        </div>
+
+        <div class="card-title">⚡ Виберіть операцію для візуалізації:</div>
+        <div class="btn-group" id="op-buttons-group">
+          <button class="btn active-op" onclick="setOp('union')"><span class="btn-sym">∪</span> Об'єднання (A ∪ B)</button>
+          <button class="btn" onclick="setOp('intersect')"><span class="btn-sym">∩</span> Переріз (A ∩ B)</button>
+          <button class="btn" onclick="setOp('diffAB')"><span class="btn-sym">\</span> Різниця (A \ B)</button>
+          <button class="btn" onclick="setOp('diffBA')"><span class="btn-sym">\</span> Різниця (B \ A)</button>
+          <button class="btn" onclick="setOp('symDiff')"><span class="btn-sym">△</span> Сим. різниця (A △ B)</button>
+          <button class="btn" onclick="setOp('compA')"><span class="btn-sym">A'</span> Доповнення A̅</button>
+          <button class="btn" onclick="setOp('compB')"><span class="btn-sym">B'</span> Доповнення B̅</button>
+          <button class="btn" onclick="setOp('subsetTest')"><span class="btn-sym">⊂</span> Підмножина (A ⊂ B?)</button>
+        </div>
+
+        <!-- Real-time Subsets Inspector Box -->
+        <div class="subset-checker-box" id="subset-check-box">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Right Column: Visual Euler-Venn & Result -->
+      <div class="card">
+        <div class="card-title" style="justify-content: space-between;">
+          <span>📊 Діаграма Ейлера-Венна</span>
+          <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">Підсвічуються топологічні зони</span>
+        </div>
+
+        <!-- SVG Diagram with 4 Isolated Masked Topological Regions -->
+        <svg id="venn-svg" class="venn-svg" viewBox="0 0 460 230">
+          <defs>
+            <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#38bdf8" flood-opacity="0.85"/>
+            </filter>
+            <filter id="glow-green" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#10b981" flood-opacity="0.95"/>
+            </filter>
+            <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#a855f7" flood-opacity="0.85"/>
+            </filter>
+            <filter id="glow-amber" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="5" flood-color="#f59e0b" flood-opacity="0.85"/>
+            </filter>
+            <filter id="glow-red" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#ef4444" flood-opacity="0.9"/>
+            </filter>
+            <!-- Mask ensures Universe Outside never bleeds into Circle A or Circle B -->
+            <mask id="outside-mask">
+              <rect x="0" y="0" width="460" height="230" fill="white" />
+              <circle cx="170" cy="115" r="80" fill="black" />
+              <circle cx="270" cy="115" r="80" fill="black" />
+            </mask>
+          </defs>
+
+          <!-- 1. Background Universe Rectangle (Base canvas) -->
+          <rect id="canvas-bg" x="8" y="8" width="444" height="214" rx="8" fill="#090e1a" stroke="#24324f" stroke-width="1.5"/>
+          <text id="lbl-svg-universe" x="20" y="27" fill="#64748b" font-size="11" font-weight="700">УНІВЕРСУМ U = {0..9}</text>
+
+          <!-- 2. Universe Outside Region U \ (A ∪ B) (Masked so it strictly avoids Circle A and B) -->
+          <rect id="region-outside" class="venn-region" x="8" y="8" width="444" height="214" rx="8" mask="url(#outside-mask)" fill="rgba(245, 158, 11, 0.04)" stroke="none" onclick="setOp('compA')" title="Клацніть для перегляду доповнення (U \ A)"/>
+
+          <!-- 3. Region Only A (A \ B) -->
+          <path id="region-only-a" class="venn-region" d="M 220 52.55 A 80 80 0 1 0 220 177.45 A 80 80 0 0 1 220 52.55 Z" fill="rgba(56, 189, 248, 0.08)" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1" onclick="setOp('diffAB')" title="Тільки множина A (A \ B)"/>
+
+          <!-- 4. Region Only B (B \ A) -->
+          <path id="region-only-b" class="venn-region" d="M 220 52.55 A 80 80 0 1 1 220 177.45 A 80 80 0 0 0 220 52.55 Z" fill="rgba(168, 85, 247, 0.08)" stroke="rgba(168, 85, 247, 0.3)" stroke-width="1" onclick="setOp('diffBA')" title="Тільки множина B (B \ A)"/>
+
+          <!-- 5. Intersection Lens Region (A ∩ B) -->
+          <path id="region-inter" class="venn-region" d="M 220 52.55 A 80 80 0 0 1 220 177.45 A 80 80 0 0 1 220 52.55 Z" fill="rgba(16, 185, 129, 0.08)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1" onclick="setOp('intersect')" title="Переріз (A ∩ B)"/>
+
+          <!-- Circle A Outline & Title -->
+          <circle id="circle-a-border" cx="170" cy="115" r="80" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.9"/>
+          <text id="lbl-circle-a" x="125" y="44" fill="#38bdf8" font-size="13" font-weight="800">Множина A</text>
+
+          <!-- Circle B Outline & Title -->
+          <circle id="circle-b-border" cx="270" cy="115" r="80" fill="none" stroke="#a855f7" stroke-width="2.5" opacity="0.9"/>
+          <text id="lbl-circle-b" x="295" y="44" fill="#a855f7" font-size="13" font-weight="800">Множина B</text>
+
+          <!-- Dynamic Element Labels inside SVG -->
+          <g id="svg-labels-group" pointer-events="none">
+            <text id="txt-only-a" x="135" y="119" text-anchor="middle" fill="#93c5fd" font-size="13" font-weight="bold"></text>
+            <text id="txt-inter" x="220" y="119" text-anchor="middle" fill="#34d399" font-size="13" font-weight="800"></text>
+            <text id="txt-only-b" x="305" y="119" text-anchor="middle" fill="#d8b4fe" font-size="13" font-weight="bold"></text>
+            <text id="txt-outside" x="20" y="202" fill="#94a3b8" font-size="11" font-weight="bold"></text>
+          </g>
+        </svg>
+
+        <!-- Color Legend for Regions -->
+        <div class="venn-legend">
+          <span class="legend-item"><span class="legend-dot" style="background: #38bdf8;"></span> Тільки A (A \ B)</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> Переріз (A ∩ B)</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #a855f7;"></span> Тільки B (B \ A)</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> Поза колами (U \ (A ∪ B))</span>
+        </div>
+
+        <!-- Result Highlight Card -->
+        <div class="result-highlight-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Елементи результату операції:</span>
+            <span id="result-count-badge" class="badge" style="background: rgba(255,255,255,0.08); color: #fff;">0 елементів</span>
+          </div>
+
+          <div id="result-badges-container" style="min-height: 38px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 10px;">
+            <!-- Populated with color pills -->
+          </div>
+          
+          <div class="formula-box" id="sets-output-box" style="margin: 0;">
+            <!-- Detailed Formula & Cardinality Calculation -->
+          </div>
+        </div>
+
+        <!-- Quantitative Stats Bar -->
+        <div style="display: flex; gap: 12px; font-size: 0.83rem; color: var(--text-muted); flex-wrap: wrap; margin-top: 10px; padding-top: 8px; border-top: 1px solid #1c273e;">
+          <div>|A| = <b id="card-a" style="color: #38bdf8;">5</b></div>
+          <div>|B| = <b id="card-b" style="color: #a855f7;">5</b></div>
+          <div>|A ∩ B| = <b id="card-inter" style="color: #10b981;">2</b></div>
+          <div>|A ∪ B| = <b id="card-union" style="color: #f8fafc;">8</b></div>
+          <div>|A \ B| = <b id="card-diff-ab" style="color: #38bdf8;">3</b></div>
+          <div>|B \ A| = <b id="card-diff-ba" style="color: #a855f7;">3</b></div>
+          <div>|A △ B| = <b id="card-sym" style="color: #f59e0b;">6</b></div>
+          <div>|U| = <b id="card-u" style="color: #94a3b8;">10</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: RELATIONS -->
+  <section id="tab-relations" class="tab-content">
+    <!-- Top Concept & Classification Banner -->
+    <div class="op-symbol-card" id="rel-symbol-banner" style="margin-bottom: 20px;">
+      <div class="symbol-badge" id="rel-symbol-icon" style="color: var(--accent); border-color: var(--accent);">≡</div>
+      <div class="op-details">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+          <h2 class="op-title" id="rel-symbol-name">Відношення еквівалентності</h2>
+          <span class="badge" id="rel-type-badge" style="background: rgba(16, 185, 129, 0.2); color: var(--success);">Факторизація A/ρ</span>
+        </div>
+        <div class="op-formula" id="rel-symbol-formal">Рефлексивне (M[i,i]=1) + Симетричне (M=Mᵀ) + Транзитивне (M² ≤ M)</div>
+        <div class="op-mnemonic" id="rel-symbol-mnemonic">
+          💡 <b>Мнемоніка:</b> Розбиває множину на ізольовані взаємопов'язані «острівці» (класи еквівалентності), як поділ на класи вирахувань або кластеризація!
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <!-- Left Column: Interactive Matrix, Toolbar & Presets -->
+      <div class="card">
+        <div class="card-title" style="justify-content: space-between;">
+          <span>🧮 Матриця відношення M_ρ на A = {1, 2, 3, 4}</span>
+          <span id="pairs-count-badge" class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent);">|ρ| = 4 пари</span>
+        </div>
+
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px;">
+          Клікніть на комірку (i, j) для зміни значення. Наведіть курсор для аналізу симетричної пари:
+        </p>
+
+        <!-- Matrix Helper Quick Toolbar -->
+        <div class="matrix-toolbar">
+          <button class="btn btn-sm" onclick="matrixTool('refl')">+ Діагональ (Рефл)</button>
+          <button class="btn btn-sm" onclick="matrixTool('irrefl')">- Діагональ (Антирефл)</button>
+          <button class="btn btn-sm" onclick="matrixTool('symm')">⟷ Симетрія</button>
+          <button class="btn btn-sm" onclick="matrixTool('trans')">⚡ Транзит. замикання</button>
+          <button class="btn btn-sm" onclick="matrixTool('clear')">∅ Очистити</button>
+        </div>
+        
+        <table class="matrix-table" id="matrix-table">
+          <!-- Populated by JS -->
+        </table>
+
+        <!-- Interactive Hover Hint for Matrix Pairs -->
+        <div id="matrix-hover-hint" style="font-size: 0.82rem; color: var(--text-muted); min-height: 24px; padding: 6px 10px; background: #090d16; border-radius: 6px; border: 1px solid #1c273e; margin-bottom: 12px; font-family: var(--code-font);">
+          Наведіть курсор на комірку матриці для інспекції пари (a, b)
+        </div>
+
+        <!-- Explicit Set of Relation Pairs Display -->
+        <div class="result-highlight-card" style="margin-top: 10px; margin-bottom: 14px; background: #0c1322; border-color: #233454;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px;">
+              📦 Перелік елементів відношення ρ:
+            </span>
+            <span id="pairs-count-badge-detail" class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent);">
+              |ρ| = 4 з 16 пар
+            </span>
+          </div>
+
+          <!-- Mathematical Set Notation: ρ = { (1, 1), ... } -->
+          <div style="font-family: var(--code-font); font-size: 0.92rem; color: #38bdf8; background: #070b14; padding: 8px 10px; border-radius: 6px; border: 1px solid #1c273e; margin-bottom: 8px; word-break: break-all; line-height: 1.5;">
+            <span style="color: #94a3b8; font-weight: 700;">ρ = </span><span id="rel-pairs-set-display">{ (1, 1), (2, 2), (3, 3), (4, 4) }</span>
+          </div>
+
+          <!-- Interactive Color-Coded Pair Pills -->
+          <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">
+            Інтерактивні пари-елементи (клік — вимкнути, наведення — інспекція у графі та матриці):
+          </div>
+          <div id="rel-pairs-pills" style="min-height: 32px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 8px;">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Base Set Info and Complement Pairs -->
+          <div style="border-top: 1px solid rgba(255,255,255,0.07); padding-top: 6px; font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 3px;">
+            <div>• <b>Базова множина:</b> <span style="color: #38bdf8; font-family: var(--code-font); font-weight: 700;">A = { 1, 2, 3, 4 }</span> (|A| = 4)</div>
+            <div>• <b>Декартовий квадрат:</b> <span style="font-family: var(--code-font);">|A × A| = 16</span> пар у повному універсальному відношенні</div>
+            <div>• <b>Пари поза відношенням (A² \ ρ):</b> <span id="rel-complement-display" style="font-family: var(--code-font); color: #94a3b8; font-size: 0.78rem;">{ ... }</span> (<span id="rel-complement-count">12</span> пар)</div>
+          </div>
+        </div>
+
+        <div class="card-title" style="margin-top: 10px;">⚡ Навчальні математичні пресети:</div>
+        <div class="btn-group">
+          <button class="btn btn-sm" onclick="applyPreset('eq')">Рівність (=)</button>
+          <button class="btn btn-sm" onclick="applyPreset('le')">Нестрогий порядок (≤)</button>
+          <button class="btn btn-sm" onclick="applyPreset('lt')">Строгий порядок (&lt;)</button>
+          <button class="btn btn-sm" onclick="applyPreset('div')">Дільність (a | b)</button>
+          <button class="btn btn-sm" onclick="applyPreset('mod2')">Порівняння (a ≡ b mod 2)</button>
+          <button class="btn btn-sm" onclick="applyPreset('cycle')">Ланцюг (1→2→3→4)</button>
+          <button class="btn btn-sm" onclick="applyPreset('univ')">Універсальне (A²)</button>
+          <button class="btn btn-sm" onclick="applyPreset('empty')">Порожнє (∅)</button>
+        </div>
+      </div>
+
+      <!-- Right Column: Visual Graph and Diagnostic Property Breakdown -->
+      <div class="card">
+        <div class="card-title" style="justify-content: space-between;">
+          <span>🕸️ Орієнтований граф відношення (Орграф)</span>
+          <span style="font-size: 0.8rem; font-weight: normal; color: var(--text-muted);">Вигнуті дуги усувають накладання</span>
+        </div>
+
+        <!-- SVG Graph with Curved Arcs, Loops, and Cluster Glowing Nodes -->
+        <svg id="graph-svg" class="venn-svg" viewBox="0 0 360 220">
+          <defs>
+            <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#c084fc"/>
+            </marker>
+            <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#34d399"/>
+            </marker>
+            <marker id="arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#38bdf8"/>
+            </marker>
+          </defs>
+          <!-- Dynamic edges and nodes populated by JS -->
+        </svg>
+
+        <!-- Graph Edge Legend -->
+        <div class="venn-legend" style="margin-top: 8px; margin-bottom: 12px;">
+          <span class="legend-item"><span class="legend-dot" style="background: #38bdf8;"></span> Петля (a, a)</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #34d399;"></span> Двостороння симетрія (a ↔ b)</span>
+          <span class="legend-item"><span class="legend-dot" style="background: #c084fc;"></span> Одностороння дуга (a → b)</span>
+        </div>
+
+        <!-- Factor Set / Class Container -->
+        <div class="result-highlight-card" style="margin-bottom: 12px;">
+          <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-bottom: 4px;">Аналітичний висновок та класифікація:</div>
+          <div id="rel-class-box" style="line-height: 1.45; font-size: 0.95rem;">
+            <!-- Classification text & classes -->
+          </div>
+        </div>
+
+        <div style="font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 8px;">
+          📋 Діагностика 5 фундаментальних властивостей:
+        </div>
+
+        <!-- Step-by-Step Diagnostic Cards -->
+        <div class="prop-diagnostics-grid" id="props-container">
+          <!-- Populated dynamically by JS with exact proofs/counterexamples -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: COMBINATORICS -->
+  <section id="tab-combinatorics" class="tab-content">
+    
+    <!-- Visual Decision Tree / Flowchart Box -->
+    <div class="flow-tree-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+        <span style="font-size: 1.05rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px;">
+          🧭 Схема визначення типу комбінаторної конфігурації (Дерево рішень)
+        </span>
+        <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: var(--accent);">
+          💡 Клікніть на будь-яку картку формули для її вибору
+        </span>
+      </div>
+
+      <!-- Root Question 1 -->
+      <div style="background: #090e1a; border: 1px solid #20314f; border-radius: 8px; padding: 10px 14px; text-align: center; margin-bottom: 14px;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); font-weight: 700;">Крок 1</span>
+        <div style="font-size: 1rem; font-weight: 700; color: #fff; margin-top: 2px;">
+          ❓ Чи ВСІ елементи множини беруть участь у вибірці?
+        </div>
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+          Чи дорівнює обсяг вибірки потужності базової множини: <b>k = n</b>?
+        </div>
+      </div>
+
+      <!-- 2 Major Branches Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1.6fr; gap: 14px; align-items: stretch;">
+        
+        <!-- Branch 1: Permutations (k = n) -->
+        <div style="background: #090e1a; border: 1px solid #1c2a44; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span class="flow-badge-yes">ТАК (k = n)</span>
+              <b style="color: #38bdf8; font-size: 0.95rem;">ПЕРЕСТАНОВКИ (P)</b>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 8px;">
+              Усі <i>n</i> елементів міняються місцями (порядок суттєвий).
+            </div>
+
+            <div style="font-size: 0.75rem; font-weight: 700; color: #94a3b8; margin-bottom: 6px;">
+              Чи є повторення серед елементів множини?
+            </div>
+          </div>
+
+          <div style="display: grid; gap: 8px; margin-top: 6px;">
+            <!-- Pn -->
+            <div id="flow-card-Pn" class="flow-card" onclick="selectCombType('Pn')">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="flow-badge-no">Без повторень (усі різні)</span>
+                <span style="font-size: 0.78rem; color: var(--accent); font-weight: 700;">P_n</span>
+              </div>
+              <div style="font-weight: 700; font-size: 0.95rem; color: #fff; margin-top: 3px; font-family: var(--code-font);">P_n = n!</div>
+              <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 3px;">📍 Черга людей, розклад n уроків, книги на полиці</div>
+            </div>
+
+            <!-- Pn_rep -->
+            <div id="flow-card-Pn_rep" class="flow-card" onclick="selectCombType('Pn_rep')">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="flow-badge-yes">З повтореннями (є однакові)</span>
+                <span style="font-size: 0.78rem; color: var(--accent); font-weight: 700;">P_n(...)</span>
+              </div>
+              <div style="font-weight: 700; font-size: 0.92rem; color: #fff; margin-top: 3px; font-family: var(--code-font);">P_n = n! / (k₁!·k₂!...)</div>
+              <div style="font-size: 0.72rem; color: #38bdf8; margin-top: 3px;">📍 Анаграми слова «МОЛОКО» (3 букви О, 2 букви М...)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Branch 2: Subsets (k < n) -> Arrangements or Combinations -->
+        <div style="background: #090e1a; border: 1px solid #1c2a44; border-radius: 8px; padding: 12px; display: flex; flex-direction: column;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <span class="flow-badge-no">НІ (k &lt; n)</span>
+            <b style="color: #c084fc; font-size: 0.95rem;">РОЗМІЩЕННЯ ЧИ КОМБІНАЦІЇ?</b>
+          </div>
+
+          <!-- Question 2 -->
+          <div style="background: #060a12; border: 1px solid #182338; border-radius: 6px; padding: 7px 10px; margin-bottom: 10px; text-align: center;">
+            <span style="font-size: 0.72rem; text-transform: uppercase; color: #c084fc; font-weight: 700;">Крок 2</span>
+            <div style="font-weight: 700; font-size: 0.88rem; color: #fff;">❓ Чи важливий ПОРЯДОК елементів у групі?</div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1;">
+            
+            <!-- Order matters -> Arrangements (A) -->
+            <div style="background: #070c17; border: 1px solid #1a2842; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span class="flow-badge-yes">ВАЖЛИВИЙ</span>
+                  <b style="color: #38bdf8; font-size: 0.85rem;">РОЗМІЩЕННЯ (A)</b>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px;">
+                  Шифр, код, місця 1-2-3 (ab ≠ ba)
+                </div>
+              </div>
+
+              <div style="display: grid; gap: 6px;">
+                <!-- Ank -->
+                <div id="flow-card-Ank" class="flow-card" onclick="selectCombType('Ank')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="flow-badge-no" style="font-size: 0.68rem;">Без повт.</span>
+                    <span style="font-size: 0.72rem; color: var(--accent); font-weight: 700;">A_n^k</span>
+                  </div>
+                  <div style="font-weight: 700; font-size: 0.88rem; color: #fff; margin-top: 2px; font-family: var(--code-font);">A_n^k = n! / (n-k)!</div>
+                  <div style="font-size: 0.69rem; color: #38bdf8; margin-top: 2px;">📍 Призери 1-2-3 місця з n бігунів</div>
+                </div>
+
+                <!-- Ank_rep -->
+                <div id="flow-card-Ank_rep" class="flow-card" onclick="selectCombType('Ank_rep')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="flow-badge-yes" style="font-size: 0.68rem;">З повт.</span>
+                    <span style="font-size: 0.72rem; color: var(--accent); font-weight: 700;">Ā_n^k</span>
+                  </div>
+                  <div style="font-weight: 700; font-size: 0.88rem; color: #fff; margin-top: 2px; font-family: var(--code-font);">Ā_n^k = n^k</div>
+                  <div style="font-size: 0.69rem; color: #38bdf8; margin-top: 2px;">📍 4-значний PIN-код, автономер</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Order does NOT matter -> Combinations (C) -->
+            <div style="background: #070c17; border: 1px solid #1a2842; border-radius: 6px; padding: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <span class="flow-badge-no">НЕ ВАЖЛИВИЙ</span>
+                  <b style="color: #34d399; font-size: 0.85rem;">КОМБІНАЦІЇ (C)</b>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 6px;">
+                  Команда, набір, склад (ab = ba)
+                </div>
+              </div>
+
+              <div style="display: grid; gap: 6px;">
+                <!-- Cnk -->
+                <div id="flow-card-Cnk" class="flow-card" onclick="selectCombType('Cnk')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="flow-badge-no" style="font-size: 0.68rem;">Без повт.</span>
+                    <span style="font-size: 0.72rem; color: var(--success); font-weight: 700;">C_n^k</span>
+                  </div>
+                  <div style="font-weight: 700; font-size: 0.88rem; color: #fff; margin-top: 2px; font-family: var(--code-font);">C_n^k = n! / (k!(n-k)!)</div>
+                  <div style="font-size: 0.69rem; color: #34d399; margin-top: 2px;">📍 Вибір 3 делегатів із 20 студентів</div>
+                </div>
+
+                <!-- Cnk_rep -->
+                <div id="flow-card-Cnk_rep" class="flow-card" onclick="selectCombType('Cnk_rep')">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span class="flow-badge-yes" style="font-size: 0.68rem;">З повт.</span>
+                    <span style="font-size: 0.72rem; color: var(--success); font-weight: 700;">C̄_n^k</span>
+                  </div>
+                  <div style="font-weight: 700; font-size: 0.88rem; color: #fff; margin-top: 2px; font-family: var(--code-font);">C̄_n^k = C_(n+k-1)^k</div>
+                  <div style="font-size: 0.69rem; color: #34d399; margin-top: 2px;">📍 Купівля 5 тістечок 4 сортів</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Interactive 3-Question Wizard Section -->
+      <div style="margin-top: 14px; background: #070c17; border: 1px solid #1a2a44; border-radius: 8px; padding: 12px;">
+        <div style="font-size: 0.9rem; font-weight: 700; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+          🧙‍♂️ Майстер визначення формули для вашої задачі (дайте відповідь на 3 запитання):
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-bottom: 10px;">
+          <!-- Q1 -->
+          <div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">1. Скільки елементів обирається?</div>
+            <div style="display: flex; gap: 6px;">
+              <button class="wizard-chip" data-wiz-key="all" data-wiz-val="all" onclick="setWizardStep('all', 'all')">Всі (k = n)</button>
+              <button class="wizard-chip active" data-wiz-key="all" data-wiz-val="part" onclick="setWizardStep('all', 'part')">Частина (k &lt; n)</button>
+            </div>
+          </div>
+
+          <!-- Q2 -->
+          <div id="wiz-order-box">
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">2. Чи важливий порядок вибірки?</div>
+            <div style="display: flex; gap: 6px;">
+              <button class="wizard-chip" data-wiz-key="order" data-wiz-val="yes" onclick="setWizardStep('order', 'yes')">Так (важливий)</button>
+              <button class="wizard-chip active" data-wiz-key="order" data-wiz-val="no" onclick="setWizardStep('order', 'no')">Ні (байдужий)</button>
+            </div>
+          </div>
+
+          <!-- Q3 -->
+          <div>
+            <div style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 4px;">3. Чи можуть елементи повторюватись?</div>
+            <div style="display: flex; gap: 6px;">
+              <button class="wizard-chip active" data-wiz-key="repeat" data-wiz-val="no" onclick="setWizardStep('repeat', 'no')">Ні (всі різні)</button>
+              <button class="wizard-chip" data-wiz-key="repeat" data-wiz-val="yes" onclick="setWizardStep('repeat', 'yes')">Так (повторювані)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Recommendation Box -->
+        <div id="wizard-recommendation-box" style="background: #09101f; border: 1px solid #1e3357; border-radius: 6px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+          <div>
+            <div style="color: #38bdf8; font-weight: 700; font-size: 0.85rem;">🎯 Рекомендована конфігурація:</div>
+            <div style="color: #fff; font-size: 0.88rem;">Обираємо <i>k</i> з <i>n</i>, порядок не важливий, без повторень ⇒ <b>Комбінації без повторень: C_n^k</b></div>
+          </div>
+          <button class="btn btn-sm" onclick="selectCombType('Cnk')" style="background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #fff;">
+            ⚡ Застосувати в калькуляторі
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Calculator Controls Grid -->
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🎛️ Параметри обчислення</div>
+        <label>Тип конфігурації:</label>
+        <select id="comb-type" onchange="calcComb()">
+          <option value="Pn">Перестановки без повторень: P_n = n!</option>
+          <option value="Ank">Розміщення без повторень: A_n^k = n! / (n - k)!</option>
+          <option value="Cnk" selected>Комбінації без повторень: C_n^k = n! / (k! · (n - k)!)</option>
+          <option value="Ank_rep">Розміщення з повтореннями: Ā_n^k = n^k</option>
+          <option value="Cnk_rep">Комбінації з повтореннями: C̄_n^k = C_(n+k-1)^k</option>
+          <option value="Pn_rep">Перестановки з повтореннями (Анаграма слова)</option>
+        </select>
+
+        <div id="standard-inputs">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label>Потужність множини (n):</label>
+              <input type="number" id="inp-n" value="7" min="1" max="25" oninput="calcComb()">
+            </div>
+            <div id="box-k">
+              <label>Розмір вибірки (k):</label>
+              <input type="number" id="inp-k" value="3" min="0" max="25" oninput="calcComb()">
+            </div>
+          </div>
+        </div>
+
+        <div id="anagram-inputs" style="display: none;">
+          <label>Введіть слово для анаграми:</label>
+          <input type="text" id="inp-word" value="МАТЕМАТИКА" oninput="calcComb()">
+        </div>
+
+        <div class="formula-box" id="comb-formula-box">
+          C_7^3 = 7! / (3! · 4!) = (7 · 6 · 5) / (1 · 2 · 3)
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔢 Результат та Згенеровані вибірки</div>
+        <div style="color: var(--text-muted); font-size: 0.85rem;">Кількість конфігурацій (N):</div>
+        <div class="res-metric" id="comb-result-val">35</div>
+
+        <div style="margin-top: 10px; margin-bottom: 6px; font-size: 0.85rem; color: var(--text-muted);">
+          Приклади згенерованих комбінацій (перші 50 з елементів множини {A, B, C, ...}):
+        </div>
+        <div class="samples-stream" id="samples-container">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary Comparison Table -->
+    <div class="card" style="margin-top: 14px;">
+      <div class="card-title">📋 Зведена шпаргалка комбінаторних конфігурацій</div>
+      <div style="overflow-x: auto;">
+        <table class="comb-summary-table">
+          <thead>
+            <tr>
+              <th>Тип конфігурації</th>
+              <th>Позначення</th>
+              <th>Всі елементи?</th>
+              <th>Порядок важливий?</th>
+              <th>Повторення?</th>
+              <th>Формула</th>
+              <th>Типовий життєвий приклад</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="cursor: pointer;" onclick="selectCombType('Pn')">
+              <td><b>Перестановки без повторень</b></td>
+              <td><span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">P_n</span></td>
+              <td><span class="flow-badge-yes">Так (k = n)</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><span class="flow-badge-no">Ні</span></td>
+              <td><code>P_n = n!</code></td>
+              <td>Черга людей, порядок виступів на сцені, книги на полиці</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="selectCombType('Pn_rep')">
+              <td><b>Перестановки з повтореннями</b></td>
+              <td><span class="badge" style="background: rgba(56, 189, 248, 0.2); color: #38bdf8;">P_n(k₁,...)</span></td>
+              <td><span class="flow-badge-yes">Так (k = n)</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><code>n! / (k₁! · k₂! · ...)</code></td>
+              <td>Анаграми слів: «МОЛОКО», «МАТЕМАТИКА», «СТАТИСТИКА»</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="selectCombType('Ank')">
+              <td><b>Розміщення без повторень</b></td>
+              <td><span class="badge" style="background: rgba(192, 132, 252, 0.2); color: #c084fc;">A_n^k</span></td>
+              <td><span class="flow-badge-no">Ні (k &lt; n)</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><span class="flow-badge-no">Ні</span></td>
+              <td><code>n! / (n - k)!</code></td>
+              <td>П'єдестал пошани (золото, срібло, бронза), код із різних цифр</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="selectCombType('Ank_rep')">
+              <td><b>Розміщення з повтореннями</b></td>
+              <td><span class="badge" style="background: rgba(192, 132, 252, 0.2); color: #c084fc;">Ā_n^k</span></td>
+              <td><span class="flow-badge-neutral">Будь-яке</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><code>n^k</code></td>
+              <td>4-значний PIN-код банківської карти, пароль облікового запису</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="selectCombType('Cnk')">
+              <td><b>Комбінації без повторень</b></td>
+              <td><span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">C_n^k</span></td>
+              <td><span class="flow-badge-no">Ні (k &lt; n)</span></td>
+              <td><span class="flow-badge-no">Ні</span></td>
+              <td><span class="flow-badge-no">Ні</span></td>
+              <td><code>n! / (k! · (n - k)!)</code></td>
+              <td>Вибір 3 делегатів із 25 студентів, лотерея 6 із 45, роздача карт</td>
+            </tr>
+            <tr style="cursor: pointer;" onclick="selectCombType('Cnk_rep')">
+              <td><b>Комбінації з повтореннями</b></td>
+              <td><span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">C̄_n^k</span></td>
+              <td><span class="flow-badge-neutral">Будь-яке</span></td>
+              <td><span class="flow-badge-no">Ні</span></td>
+              <td><span class="flow-badge-yes">Так</span></td>
+              <td><code>C_(n+k-1)^k</code></td>
+              <td>Купівля 5 тістечок в кондитерській серед 4 доступних видів</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  // --- TABS LOGIC ---
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById('tab-' + tabId).classList.add('active');
+    if (tabId === 'relations') analyzeRelation();
+  }
+
+  // --- SET THEORY LAB ---
+  let currentOp = 'union';
+
+  function applySetPreset(preset) {
+    const inputU = document.getElementById('setU-input');
+    const inputA = document.getElementById('setA-input');
+    const inputB = document.getElementById('setB-input');
+    if (preset === 'intersect') {
+      if (inputU) inputU.value = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9';
+      inputA.value = '1, 2, 3, 4, 5';
+      inputB.value = '4, 5, 6, 7, 8';
+    } else if (preset === 'disjoint') {
+      if (inputU) inputU.value = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9';
+      inputA.value = '1, 2, 3';
+      inputB.value = '6, 7, 8, 9';
+    } else if (preset === 'subset') {
+      if (inputU) inputU.value = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9';
+      inputA.value = '2, 3, 4';
+      inputB.value = '1, 2, 3, 4, 5';
+    } else if (preset === 'equal') {
+      if (inputU) inputU.value = '0, 1, 2, 3, 4, 5, 6, 7, 8, 9';
+      inputA.value = '1, 3, 5, 7';
+      inputB.value = '1, 3, 5, 7';
+    } else if (preset === 'letters') {
+      if (inputU) inputU.value = 'a, b, c, d, e, f, g';
+      inputA.value = 'a, b, c, d';
+      inputB.value = 'c, d, e, f';
+    } else if (preset === 'largeNums') {
+      if (inputU) inputU.value = '10, 20, 30, 40, 50, 60, 70, 80';
+      inputA.value = '10, 20, 30, 40';
+      inputB.value = '30, 40, 50, 60';
+    }
+    updateSets();
+  }
+
+  function setOp(op) {
+    currentOp = op;
+    document.querySelectorAll('#op-buttons-group .btn').forEach(b => b.classList.remove('active-op'));
+    const btns = document.querySelectorAll('#op-buttons-group .btn');
+    btns.forEach(b => {
+      const onclickAttr = b.getAttribute('onclick');
+      if (onclickAttr && onclickAttr.includes(`'${op}'`)) {
+        b.classList.add('active-op');
+      }
+    });
+    updateSets();
+  }
+
+  function parseSet(str) {
+    if (!str || typeof str !== 'string') return [];
+    const raw = str.split(',').map(s => s.trim()).filter(s => s.length > 0);
+    const unique = Array.from(new Set(raw));
+    return unique.sort((a, b) => {
+      const numA = Number(a);
+      const numB = Number(b);
+      if (!isNaN(numA) && !isNaN(numB) && a !== '' && b !== '') {
+        return numA - numB;
+      }
+      return a.localeCompare(b, undefined, { numeric: true });
+    });
+  }
+
+  function updateRegionText(elemId, x, y, elements, defaultColor, emptyLabel = '∅') {
+    const el = document.getElementById(elemId);
+    if (!el) return;
+    el.setAttribute('x', x);
+    if (!elements || elements.length === 0) {
+      el.innerHTML = `<tspan x="${x}" y="${y}" fill="#64748b" font-weight="normal" font-size="14">${emptyLabel}</tspan>`;
+      return;
+    }
+    if (elements.length <= 3) {
+      el.innerHTML = `<tspan x="${x}" y="${y}" fill="${defaultColor}" font-weight="800" font-size="13">${elements.join(', ')}</tspan>`;
+    } else {
+      const mid = Math.ceil(elements.length / 2);
+      const line1 = elements.slice(0, mid).join(', ');
+      const line2 = elements.slice(mid).join(', ');
+      el.innerHTML = `
+        <tspan x="${x}" y="${y - 8}" fill="${defaultColor}" font-weight="800" font-size="12">${line1}</tspan>
+        <tspan x="${x}" y="${y + 11}" fill="${defaultColor}" font-weight="800" font-size="12">${line2}</tspan>
+      `;
+    }
+  }
+
+  function updateSets() {
+    const setA = parseSet(document.getElementById('setA-input').value);
+    const setB = parseSet(document.getElementById('setB-input').value);
+
+    // Read Universe U from input, or fallback if empty
+    const inputUElem = document.getElementById('setU-input');
+    let userU = inputUElem ? parseSet(inputUElem.value) : [];
+    if (userU.length === 0) {
+      userU = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+      if (inputUElem) inputUElem.value = userU.join(', ');
+    }
+
+    // Dynamic Universe U: ensure A ⊆ U and B ⊆ U by axiom
+    const extra = [...setA, ...setB].filter(x => !userU.includes(x));
+    const U = Array.from(new Set([...userU, ...extra])).sort((a, b) => {
+      const numA = Number(a), numB = Number(b);
+      if (!isNaN(numA) && !isNaN(numB) && a !== '' && b !== '') return numA - numB;
+      return a.localeCompare(b, undefined, { numeric: true });
+    });
+
+    // If U expanded due to new elements, synchronize the input field smoothly
+    if (extra.length > 0 && inputUElem) {
+      inputUElem.value = U.join(', ');
+    }
+
+    const onlyA = setA.filter(x => !setB.includes(x));
+    const inter = setA.filter(x => setB.includes(x));
+    const onlyB = setB.filter(x => !setA.includes(x));
+    const union = Array.from(new Set([...setA, ...setB])).sort((a, b) => {
+      const numA = Number(a), numB = Number(b);
+      if (!isNaN(numA) && !isNaN(numB) && a !== '' && b !== '') return numA - numB;
+      return a.localeCompare(b, undefined, { numeric: true });
+    });
+    const outside = U.filter(x => !union.includes(x));
+    const symDiff = [...onlyA, ...onlyB].sort((a, b) => {
+      const numA = Number(a), numB = Number(b);
+      if (!isNaN(numA) && !isNaN(numB) && a !== '' && b !== '') return numA - numB;
+      return a.localeCompare(b, undefined, { numeric: true });
+    });
+
+    // Update Formatted Sets Elements Display
+    const setADisp = document.getElementById('set-a-display');
+    const setBDisp = document.getElementById('set-b-display');
+    const setUDisp = document.getElementById('set-u-display');
+    const setALen = document.getElementById('set-a-len');
+    const setBLen = document.getElementById('set-b-len');
+    const setULen = document.getElementById('set-u-len');
+
+    if (setADisp) setADisp.textContent = setA.length > 0 ? `{ ${setA.join(', ')} }` : '∅';
+    if (setBDisp) setBDisp.textContent = setB.length > 0 ? `{ ${setB.join(', ')} }` : '∅';
+    if (setUDisp) {
+      if (U.length === 0) setUDisp.textContent = '∅';
+      else if (U.length <= 12) setUDisp.textContent = `{ ${U.join(', ')} }`;
+      else setUDisp.textContent = `{ ${U.slice(0, 10).join(', ')}, ... }`;
+    }
+    if (setALen) setALen.textContent = setA.length;
+    if (setBLen) setBLen.textContent = setB.length;
+    if (setULen) setULen.textContent = U.length;
+
+    // Update SVG Universe and Circle Titles
+    const lblSvgUniverse = document.getElementById('lbl-svg-universe');
+    if (lblSvgUniverse) {
+      const uSummary = U.length <= 8 ? `{ ${U.join(', ')} }` : `{ ${U.slice(0, 7).join(', ')}... }`;
+      lblSvgUniverse.textContent = `УНІВЕРСУМ U = ${uSummary} (|U| = ${U.length})`;
+    }
+    const lblA = document.getElementById('lbl-circle-a');
+    const lblB = document.getElementById('lbl-circle-b');
+    if (lblA) lblA.textContent = `Множина A (|A| = ${setA.length})`;
+    if (lblB) lblB.textContent = `Множина B (|B| = ${setB.length})`;
+
+    // Update SVG Text inside regions
+    updateRegionText('txt-only-a', 135, 119, onlyA, '#93c5fd', '∅');
+    updateRegionText('txt-inter', 220, 119, inter, '#34d399', '∅');
+    updateRegionText('txt-only-b', 305, 119, onlyB, '#d8b4fe', '∅');
+    const txtOutside = document.getElementById('txt-outside');
+    if (txtOutside) {
+      if (outside.length === 0) {
+        txtOutside.textContent = 'Поза колами (U \\ (A ∪ B)): ∅';
+      } else if (outside.length <= 6) {
+        txtOutside.textContent = `Поза колами (U \\ (A ∪ B)): { ${outside.join(', ')} }`;
+      } else {
+        txtOutside.textContent = `Поза колами (U \\ (A ∪ B)): { ${outside.slice(0, 6).join(', ')}... } (|U \\ (A ∪ B)| = ${outside.length})`;
+      }
+    }
+
+    let res = [];
+    let opName = '';
+    let opSymbol = '';
+    let opFormal = '';
+    let opMnemonic = '';
+    let opLogic = '';
+    let opColor = '#38bdf8';
+    let arithmeticFormula = '';
+
+    const canvasBg = document.getElementById('canvas-bg');
+    const regOnlyA = document.getElementById('region-only-a');
+    const regInter = document.getElementById('region-inter');
+    const regOnlyB = document.getElementById('region-only-b');
+    const regOutside = document.getElementById('region-outside');
+    const circleABorder = document.getElementById('circle-a-border');
+    const circleBBorder = document.getElementById('circle-b-border');
+
+    // Default neutral states
+    if (canvasBg) {
+      canvasBg.setAttribute('stroke', '#24324f');
+      canvasBg.setAttribute('stroke-width', '1.5');
+      canvasBg.setAttribute('filter', 'none');
+    }
+
+    regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.08)');
+    regOnlyA.setAttribute('filter', 'none');
+    regOnlyA.setAttribute('stroke', 'rgba(56, 189, 248, 0.3)');
+    regOnlyA.setAttribute('stroke-width', '1');
+    regOnlyA.setAttribute('opacity', '1');
+
+    regInter.setAttribute('fill', 'rgba(16, 185, 129, 0.08)');
+    regInter.setAttribute('filter', 'none');
+    regInter.setAttribute('stroke', 'rgba(16, 185, 129, 0.3)');
+    regInter.setAttribute('stroke-width', '1');
+    regInter.setAttribute('opacity', '1');
+
+    regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.08)');
+    regOnlyB.setAttribute('filter', 'none');
+    regOnlyB.setAttribute('stroke', 'rgba(168, 85, 247, 0.3)');
+    regOnlyB.setAttribute('stroke-width', '1');
+    regOnlyB.setAttribute('opacity', '1');
+
+    regOutside.setAttribute('fill', 'rgba(245, 158, 11, 0.03)');
+    regOutside.setAttribute('filter', 'none');
+    regOutside.setAttribute('opacity', '1');
+
+    if (circleABorder) {
+      circleABorder.setAttribute('stroke', '#38bdf8');
+      circleABorder.setAttribute('stroke-width', '2.5');
+      circleABorder.setAttribute('stroke-dasharray', 'none');
+      circleABorder.setAttribute('opacity', '0.9');
+    }
+
+    if (circleBBorder) {
+      circleBBorder.setAttribute('stroke', '#a855f7');
+      circleBBorder.setAttribute('stroke-width', '2.5');
+      circleBBorder.setAttribute('stroke-dasharray', 'none');
+      circleBBorder.setAttribute('opacity', '0.9');
+    }
+
+    const isSubset = onlyA.length === 0;
+    const isProperSubset = isSubset && (onlyB.length > 0);
+    const isEqual = isSubset && (onlyB.length === 0);
+    const isDisjoint = inter.length === 0;
+
+    switch(currentOp) {
+      case 'union':
+        res = union;
+        opSymbol = '∪';
+        opName = "Об'єднання множин (Union: A ∪ B)";
+        opFormal = "A ∪ B = { x ∈ U | x ∈ A ∨ x ∈ B }";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Чаша» відкрита догори ∪ — збираємо та насипаємо елементи з ОБОХ кіл разом! Логічне <b>АБО (OR / ∨)</b>.";
+        opLogic = "Логічне «АБО» (OR / ∨) | Python: A | B";
+        opColor = '#38bdf8';
+        arithmeticFormula = `|A ∪ B| = |A| + |B| - |A ∩ B| = ${setA.length} + ${setB.length} - ${inter.length} = <b>${union.length}</b>`;
+
+        regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.45)');
+        regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
+        regOnlyA.setAttribute('stroke', '#38bdf8');
+        regOnlyA.setAttribute('stroke-width', '2');
+
+        regInter.setAttribute('fill', 'rgba(16, 185, 129, 0.6)');
+        regInter.setAttribute('filter', 'url(#glow-green)');
+        regInter.setAttribute('stroke', '#10b981');
+        regInter.setAttribute('stroke-width', '2');
+
+        regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.45)');
+        regOnlyB.setAttribute('filter', 'url(#glow-purple)');
+        regOnlyB.setAttribute('stroke', '#a855f7');
+        regOnlyB.setAttribute('stroke-width', '2');
+        break;
+
+      case 'intersect':
+        res = inter;
+        opSymbol = '∩';
+        opName = "Переріз множин (Intersection: A ∩ B)";
+        opFormal = "A ∩ B = { x ∈ U | x ∈ A ∧ x ∈ B }";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Арка / Шапка» ∩ — тільки те, що знаходиться ОДНОЧАСНО під обома склепіннями (спільне перекриття)! Логічне <b>ТА (AND / ∧)</b>.";
+        opLogic = "Логічне «ТА» (AND / ∧) | Python: A & B";
+        opColor = '#10b981';
+        arithmeticFormula = isDisjoint
+          ? `|A ∩ B| = <b>0</b> (Множини диз'юнктні: спільних елементів немає, переріз порожній ∅)`
+          : `|A ∩ B| = спільні елементи обох кіл = <b>${inter.length}</b>`;
+
+        regInter.setAttribute('fill', 'rgba(16, 185, 129, 0.75)');
+        regInter.setAttribute('filter', 'url(#glow-green)');
+        regInter.setAttribute('stroke', '#10b981');
+        regInter.setAttribute('stroke-width', '2');
+        regOnlyA.setAttribute('opacity', '0.35');
+        regOnlyB.setAttribute('opacity', '0.35');
+        break;
+
+      case 'diffAB':
+        res = onlyA;
+        opSymbol = '\\';
+        opName = "Різниця множин (Difference: A \\ B)";
+        opFormal = "A \\ B = { x ∈ U | x ∈ A ∧ x ∉ B } = A ∩ B̅";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Відсікання» — беремо коло A і ніжками циркуля вирізаємо все, що торкається кола B. Чисті елементи A!";
+        opLogic = "Різниця (AND NOT) | Python: A - B";
+        opColor = '#38bdf8';
+        arithmeticFormula = `|A \\ B| = |A| - |A ∩ B| = ${setA.length} - ${inter.length} = <b>${onlyA.length}</b>`;
+
+        regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.7)');
+        regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
+        regOnlyA.setAttribute('stroke', '#38bdf8');
+        regOnlyA.setAttribute('stroke-width', '2');
+        regInter.setAttribute('opacity', '0.35');
+        regOnlyB.setAttribute('opacity', '0.35');
+        break;
+
+      case 'diffBA':
+        res = onlyB;
+        opSymbol = '\\';
+        opName = "Різниця множин (Difference: B \\ A)";
+        opFormal = "B \\ A = { x ∈ U | x ∈ B ∧ x ∉ A } = B ∩ A̅";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Тільки B» — чиста власна територія множини B без жодної домішки елементів кола A.";
+        opLogic = "Різниця (AND NOT) | Python: B - A";
+        opColor = '#a855f7';
+        arithmeticFormula = `|B \\ A| = |B| - |A ∩ B| = ${setB.length} - ${inter.length} = <b>${onlyB.length}</b>`;
+
+        regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.7)');
+        regOnlyB.setAttribute('filter', 'url(#glow-purple)');
+        regOnlyB.setAttribute('stroke', '#a855f7');
+        regOnlyB.setAttribute('stroke-width', '2');
+        regInter.setAttribute('opacity', '0.35');
+        regOnlyA.setAttribute('opacity', '0.35');
+        break;
+
+      case 'symDiff':
+        res = symDiff;
+        opSymbol = '△';
+        opName = "Симетрична різниця (Symmetric Difference: A △ B)";
+        opFormal = "A △ B = (A \\ B) ∪ (B \\ A) = (A ∪ B) \\ (A ∩ B)";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Виключне АБО (XOR / ⊕)» — належить або тільки A, або тільки B, але <b>НЕ в обох одночасно</b>! Центр випадає!";
+        opLogic = "XOR (Виключне АБО) | Python: A ^ B";
+        opColor = '#f59e0b';
+        arithmeticFormula = `|A △ B| = |A \\ B| + |B \\ A| = ${onlyA.length} + ${onlyB.length} = <b>${res.length}</b> (виключено центр: |A ∩ B| = ${inter.length})`;
+
+        regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.6)');
+        regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
+        regOnlyA.setAttribute('stroke', '#38bdf8');
+        regOnlyA.setAttribute('stroke-width', '2');
+
+        regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.6)');
+        regOnlyB.setAttribute('filter', 'url(#glow-purple)');
+        regOnlyB.setAttribute('stroke', '#a855f7');
+        regOnlyB.setAttribute('stroke-width', '2');
+
+        regInter.setAttribute('fill', 'rgba(9, 14, 26, 0.9)');
+        regInter.setAttribute('opacity', '0.3');
+        break;
+
+      case 'compA':
+        res = U.filter(x => !setA.includes(x));
+        opSymbol = "A'";
+        opName = "Доповнення до множини A (Complement: A' або A̅)";
+        opFormal = "A̅ = U \\ A = { x ∈ U | x ∉ A } = (B \\ A) ∪ (U \\ (A ∪ B))";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Заперечення (NOT)» — абсолютно вся площина універсуму U за межами контуру кола A (елементи тільки B + елементи поза колами)!";
+        opLogic = "Логічне «НЕ» (NOT / ¬) | Python: U - A";
+        opColor = '#f59e0b';
+        arithmeticFormula = `|A̅| = |U| - |A| = ${U.length} - ${setA.length} = <b>${res.length}</b> (елементи B \\ A: ${onlyB.length}, поза колами: ${outside.length})`;
+
+        if (canvasBg) {
+          canvasBg.setAttribute('stroke', '#f59e0b');
+          canvasBg.setAttribute('stroke-width', '2');
+          canvasBg.setAttribute('filter', 'url(#glow-amber)');
+        }
+        regOutside.setAttribute('fill', 'rgba(245, 158, 11, 0.35)');
+        regOutside.setAttribute('filter', 'url(#glow-amber)');
+
+        regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.6)');
+        regOnlyB.setAttribute('filter', 'url(#glow-purple)');
+        regOnlyB.setAttribute('stroke', '#a855f7');
+        regOnlyB.setAttribute('stroke-width', '2');
+
+        regOnlyA.setAttribute('fill', 'rgba(9, 14, 26, 0.9)');
+        regOnlyA.setAttribute('opacity', '0.25');
+        regInter.setAttribute('fill', 'rgba(9, 14, 26, 0.9)');
+        regInter.setAttribute('opacity', '0.25');
+
+        if (circleABorder) {
+          circleABorder.setAttribute('stroke-dasharray', '4, 4');
+          circleABorder.setAttribute('opacity', '0.4');
+        }
+        break;
+
+      case 'compB':
+        res = U.filter(x => !setB.includes(x));
+        opSymbol = "B'";
+        opName = "Доповнення до множини B (Complement: B' або B̅)";
+        opFormal = "B̅ = U \\ B = { x ∈ U | x ∉ B } = (A \\ B) ∪ (U \\ (A ∪ B))";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Заперечення (NOT)» — увесь універсум U без кола B (елементи тільки A + елементи поза колами)!";
+        opLogic = "Логічне «НЕ» (NOT / ¬) | Python: U - B";
+        opColor = '#f59e0b';
+        arithmeticFormula = `|B̅| = |U| - |B| = ${U.length} - ${setB.length} = <b>${res.length}</b> (елементи A \\ B: ${onlyA.length}, поза колами: ${outside.length})`;
+
+        if (canvasBg) {
+          canvasBg.setAttribute('stroke', '#f59e0b');
+          canvasBg.setAttribute('stroke-width', '2');
+          canvasBg.setAttribute('filter', 'url(#glow-amber)');
+        }
+        regOutside.setAttribute('fill', 'rgba(245, 158, 11, 0.35)');
+        regOutside.setAttribute('filter', 'url(#glow-amber)');
+
+        regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.6)');
+        regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
+        regOnlyA.setAttribute('stroke', '#38bdf8');
+        regOnlyA.setAttribute('stroke-width', '2');
+
+        regOnlyB.setAttribute('fill', 'rgba(9, 14, 26, 0.9)');
+        regOnlyB.setAttribute('opacity', '0.25');
+        regInter.setAttribute('fill', 'rgba(9, 14, 26, 0.9)');
+        regInter.setAttribute('opacity', '0.25');
+
+        if (circleBBorder) {
+          circleBBorder.setAttribute('stroke-dasharray', '4, 4');
+          circleBBorder.setAttribute('opacity', '0.4');
+        }
+        break;
+
+      case 'subsetTest':
+        opSymbol = isSubset ? (isProperSubset ? '⊂' : '⊆') : '⊄';
+        opName = isSubset 
+          ? (isProperSubset ? "Власна (строга) підмножина: A ⊂ B" : "Невласна підмножина: A = B")
+          : "Включення порушено: A ⊄ B";
+        opFormal = "A ⊆ B ⇔ (A \\ B = ∅); A ⊂ B ⇔ (A ⊆ B ∧ A ≠ B)";
+        opMnemonic = "💡 <b>Мнемоніка:</b> Власна строга підмножина A ⊂ B: коло A <b>повністю поміщається</b> всередині B, але в B обов'язково є хоча б один додатковий елемент!";
+        opLogic = isSubset ? "A ⊆ B : ІСТИНА (Включення виконується)" : "A ⊄ B : ХИБА (Включення не виконується)";
+        opColor = isSubset ? '#10b981' : '#ef4444';
+
+        if (isSubset) {
+          arithmeticFormula = isProperSubset
+            ? `✅ <b>A ⊂ B: ТАК (строга підмножина)</b>! Усі елементи A = {${setA.join(', ')}} входять до B, і в B є додаткові {${onlyB.join(', ')}}. (A ⊆ B та A ≠ B)`
+            : `✅ <b>A = B: ТАК (рівність)</b>! Усі елементи збігаються, це невласна підмножина (A ⊆ B і B ⊆ A).`;
+
+          regInter.setAttribute('fill', 'rgba(16, 185, 129, 0.75)');
+          regInter.setAttribute('filter', 'url(#glow-green)');
+          regInter.setAttribute('stroke', '#10b981');
+          regInter.setAttribute('stroke-width', '2');
+
+          regOnlyA.setAttribute('fill', 'rgba(16, 185, 129, 0.08)');
+          regOnlyA.setAttribute('stroke', 'rgba(16, 185, 129, 0.3)');
+
+          if (onlyB.length > 0) {
+            regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.45)');
+            regOnlyB.setAttribute('filter', 'url(#glow-purple)');
+            regOnlyB.setAttribute('stroke', '#a855f7');
+            regOnlyB.setAttribute('stroke-width', '1.5');
+          }
+        } else {
+          arithmeticFormula = `❌ <b>A ⊄ B: НІ (не є підмножиною)</b>! Елементи <b style="color: #ef4444;">{${onlyA.join(', ')}}</b> належать множині A, але виходять за межі B!`;
+
+          regOnlyA.setAttribute('fill', 'rgba(239, 68, 68, 0.7)');
+          regOnlyA.setAttribute('filter', 'url(#glow-red)');
+          regOnlyA.setAttribute('stroke', '#ef4444');
+          regOnlyA.setAttribute('stroke-width', '2.5');
+
+          regInter.setAttribute('opacity', '0.4');
+          regOnlyB.setAttribute('opacity', '0.4');
+        }
+        break;
+    }
+
+    // Update Top Banner Card
+    const opBanner = document.getElementById('op-symbol-banner');
+    const opIcon = document.getElementById('op-symbol-icon');
+    if (opBanner) opBanner.style.borderLeftColor = opColor;
+    if (opIcon) {
+      opIcon.textContent = opSymbol;
+      opIcon.style.color = opColor;
+      opIcon.style.borderColor = opColor;
+      opIcon.style.boxShadow = `0 0 18px ${opColor}55`;
+    }
+    document.getElementById('op-symbol-name').textContent = opName;
+    document.getElementById('op-symbol-formal').textContent = opFormal;
+    document.getElementById('op-symbol-mnemonic').innerHTML = opMnemonic;
+    const logicBadge = document.getElementById('op-logic-badge');
+    if (logicBadge) {
+      logicBadge.textContent = opLogic;
+      logicBadge.style.color = opColor;
+      logicBadge.style.background = `${opColor}22`;
+    }
+
+    // Render result badges
+    const badgesContainer = document.getElementById('result-badges-container');
+    const countBadge = document.getElementById('result-count-badge');
+
+    if (currentOp === 'subsetTest') {
+      if (isSubset) {
+        countBadge.textContent = isProperSubset ? 'A ⊂ B (Строга підмножина)' : 'A = B (Рівні множини)';
+        countBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+        countBadge.style.color = '#34d399';
+
+        let badgeHtml = setA.map(x => `<span class="elem-pill elem-pill-inter" title="Елемент з A, що належить B">${x} ∈ A ⊆ B</span>`).join(' ');
+        if (onlyB.length > 0) {
+          badgeHtml += `<span style="margin: 0 4px; color: var(--text-muted); font-size: 0.85rem;">| додаткові в B:</span> ` +
+            onlyB.map(x => `<span class="elem-pill elem-pill-b" title="Додатковий елемент B">${x} ∈ B \\ A</span>`).join(' ');
+        }
+        badgesContainer.innerHTML = badgeHtml;
+
+        document.getElementById('sets-output-box').innerHTML = `
+          <div style="color: #fff; font-weight: 700; margin-bottom: 4px;">Статус перевірки: ${isProperSubset ? 'A ⊂ B (Власна підмножина)' : 'A = B (Рівність)'}</div>
+          <div style="color: var(--success); font-size: 0.9rem;">${arithmeticFormula}</div>
+        `;
+      } else {
+        countBadge.textContent = `${onlyA.length} елемент(ів) поза B`;
+        countBadge.style.background = 'rgba(239, 68, 68, 0.2)';
+        countBadge.style.color = '#f87171';
+
+        badgesContainer.innerHTML = onlyA.map(x => 
+          `<span class="elem-pill elem-pill-danger" title="Елемент з A, що відсутній у B">${x} ∉ B</span>`
+        ).join(' ');
+
+        document.getElementById('sets-output-box').innerHTML = `
+          <div style="color: #fff; font-weight: 700; margin-bottom: 4px;">Статус перевірки: A ⊄ B (Умова включення порушена)</div>
+          <div style="color: var(--danger); font-size: 0.9rem;">${arithmeticFormula}</div>
+        `;
+      }
+    } else {
+      countBadge.textContent = `${res.length} елемент(ів)`;
+      countBadge.style.background = 'rgba(255,255,255,0.08)';
+      countBadge.style.color = '#fff';
+
+      if (res.length === 0) {
+        badgesContainer.innerHTML = '<span style="color: var(--text-muted); font-style: italic;">Порожня множина ∅ (результат не містить жодного елемента)</span>';
+      } else {
+        badgesContainer.innerHTML = res.map(x => {
+          let cls = 'elem-pill-outside';
+          let tip = 'Універсум U \\ (A ∪ B)';
+          if (onlyA.includes(x)) { cls = 'elem-pill-a'; tip = 'Тільки з множини A'; }
+          else if (inter.includes(x)) { cls = 'elem-pill-inter'; tip = 'Спільний (A ∩ B)'; }
+          else if (onlyB.includes(x)) { cls = 'elem-pill-b'; tip = 'Тільки з множини B'; }
+          return `<span class="elem-pill ${cls}" title="${tip}">${x}</span>`;
+        }).join(' ');
+      }
+
+      document.getElementById('sets-output-box').innerHTML = `
+        <div style="color: #fff; font-weight: 700; margin-bottom: 4px;">Результат: { ${res.join(', ')} }</div>
+        <div style="color: var(--accent); font-size: 0.9rem;">${arithmeticFormula}</div>
+      `;
+    }
+
+    // Quantitative Stats Bar
+    const cardA = document.getElementById('card-a');
+    const cardB = document.getElementById('card-b');
+    const cardInter = document.getElementById('card-inter');
+    const cardUnion = document.getElementById('card-union');
+    const cardDiffAB = document.getElementById('card-diff-ab');
+    const cardDiffBA = document.getElementById('card-diff-ba');
+    const cardSym = document.getElementById('card-sym');
+    const cardU = document.getElementById('card-u');
+
+    if (cardA) cardA.textContent = setA.length;
+    if (cardB) cardB.textContent = setB.length;
+    if (cardInter) cardInter.textContent = inter.length;
+    if (cardUnion) cardUnion.textContent = union.length;
+    if (cardDiffAB) cardDiffAB.textContent = onlyA.length;
+    if (cardDiffBA) cardDiffBA.textContent = onlyB.length;
+    if (cardSym) cardSym.textContent = symDiff.length;
+    if (cardU) cardU.textContent = U.length;
+
+    // Update Subset & Equality Inspector Card
+    let subHtml = `
+      <div style="font-weight: 700; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+        🔍 Відношення між A та B:
+      </div>
+      <div style="display: grid; gap: 4px;">
+        <div>• <b>Підмножина (A ⊆ B):</b> ${isSubset 
+          ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК (усі елементи A містяться в B)</span>' 
+          : `<span style="color: var(--danger); font-weight: 700;">❌ НІ (елементи {${onlyA.join(', ')}} не належать B)</span>`}
+        </div>
+        <div>• <b>Власна (строга) підмножина (A ⊂ B):</b> ${isProperSubset 
+          ? `<span style="color: var(--success); font-weight: 700;">✅ ТАК (строга, бо A ⊆ B та A ≠ B, в B є ще {${onlyB.join(', ')}})</span>` 
+          : (isEqual 
+            ? '<span style="color: var(--warning); font-weight: 700;">⚠️ НІ (A = B, це невласна підмножина)</span>' 
+            : '<span style="color: var(--danger); font-weight: 700;">❌ НІ (A не є підмножиною B)</span>')}
+        </div>
+        <div>• <b>Рівність (A = B):</b> ${isEqual 
+          ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК (A ⊆ B і B ⊆ A)</span>' 
+          : '<span style="color: var(--text-muted);">❌ НІ (множини відрізняються)</span>'}
+        </div>
+        <div>• <b>Диз'юнктність (A ∩ B = ∅):</b> ${isDisjoint 
+          ? '<span style="color: var(--accent); font-weight: 700;">✅ ТАК (множини не перетинаються)</span>' 
+          : `<span style="color: var(--text-muted);">❌ НІ (мають спільні елементи {${inter.join(', ')}})</span>`}
+        </div>
+      </div>
+    `;
+    const subCheckBox = document.getElementById('subset-check-box');
+    if (subCheckBox) subCheckBox.innerHTML = subHtml;
+  }
+
+  // --- RELATIONS LAB ---
+  let matrix = [
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+  ];
+
+  function initMatrixTable() {
+    const table = document.getElementById('matrix-table');
+    let html = '<tr><th>ρ</th><th>1</th><th>2</th><th>3</th><th>4</th></tr>';
+    for (let i = 0; i < 4; i++) {
+      html += `<tr><th>${i + 1}</th>`;
+      for (let j = 0; j < 4; j++) {
+        const isDiag = (i === j);
+        const diagClass = isDiag ? 'diag-cell ' : '';
+        html += `<td id="m-${i}-${j}" class="${diagClass}val-${matrix[i][j]}" onclick="toggleCell(${i}, ${j})" onmouseenter="hoverCell(${i}, ${j})" onmouseleave="unhoverCell(${i}, ${j})">${matrix[i][j]}</td>`;
+      }
+      html += '</tr>';
+    }
+    table.innerHTML = html;
+    analyzeRelation();
+  }
+
+  function toggleCell(i, j) {
+    matrix[i][j] = matrix[i][j] === 1 ? 0 : 1;
+    const td = document.getElementById(`m-${i}-${j}`);
+    const isDiag = (i === j);
+    td.textContent = matrix[i][j];
+    td.className = `${isDiag ? 'diag-cell ' : ''}val-${matrix[i][j]}`;
+    hoverCell(i, j);
+    analyzeRelation();
+  }
+
+  function hoverCell(i, j) {
+    const td = document.getElementById(`m-${i}-${j}`);
+    const tdSymm = document.getElementById(`m-${j}-${i}`);
+    if (td) td.classList.add('pair-hover');
+    if (tdSymm && i !== j) tdSymm.classList.add('pair-hover');
+
+    const hint = document.getElementById('matrix-hover-hint');
+    if (!hint) return;
+
+    const val = matrix[i][j];
+    const a = i + 1;
+    const b = j + 1;
+
+    if (i === j) {
+      hint.innerHTML = `🔍 <b>Діагональний елемент (${a}, ${a}) = ${val}:</b> ${val === 1 ? '<span style="color: var(--success); font-weight: 700;">✅ Петля у вершині присутня (забезпечує рефлексивність)</span>' : '<span style="color: var(--danger); font-weight: 700;">❌ Петля відсутня (порушує рефлексивність)</span>'}`;
+    } else {
+      const symVal = matrix[j][i];
+      if (val === 1 && symVal === 1) {
+        hint.innerHTML = `🔍 <b>Взаємна пара (${a}, ${b}) та (${b}, ${a}):</b> Обидва = 1 ⟷ <span style="color: var(--success); font-weight: 700;">✅ Двосторонній симетричний зв'язок</span>`;
+      } else if (val === 1 && symVal === 0) {
+        hint.innerHTML = `🔍 <b>Односторонній зв'язок:</b> (${a}, ${b}) = 1, але (${b}, ${a}) = 0 ⟶ <span style="color: #c084fc; font-weight: 700;">⚡ Напрямлена дуга (${a} → ${b})</span>`;
+      } else if (val === 0 && symVal === 1) {
+        hint.innerHTML = `🔍 <b>Зворотний зв'язок:</b> (${a}, ${b}) = 0, але (${b}, ${a}) = 1 ⟵ <span style="color: #c084fc; font-weight: 700;">⚡ Напрямлена дуга (${b} → ${a})</span>`;
+      } else {
+        hint.innerHTML = `🔍 <b>Пара (${a}, ${b}) = 0 та (${b}, ${a}) = 0:</b> Зв'язок між вершинами відсутній.`;
+      }
+    }
+  }
+
+  function unhoverCell(i, j) {
+    const td = document.getElementById(`m-${i}-${j}`);
+    const tdSymm = document.getElementById(`m-${j}-${i}`);
+    if (td) td.classList.remove('pair-hover');
+    if (tdSymm) tdSymm.classList.remove('pair-hover');
+
+    const hint = document.getElementById('matrix-hover-hint');
+    if (hint) {
+      hint.textContent = 'Наведіть курсор на комірку матриці для інспекції пари (a, b)';
+    }
+  }
+
+  function matrixTool(action) {
+    if (action === 'refl') {
+      for (let i = 0; i < 4; i++) matrix[i][i] = 1;
+    } else if (action === 'irrefl') {
+      for (let i = 0; i < 4; i++) matrix[i][i] = 0;
+    } else if (action === 'symm') {
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+          if (matrix[i][j] === 1) matrix[j][i] = 1;
+        }
+      }
+    } else if (action === 'trans') {
+      // Warshall algorithm for transitive closure
+      for (let k = 0; k < 4; k++) {
+        for (let i = 0; i < 4; i++) {
+          for (let j = 0; j < 4; j++) {
+            if (matrix[i][k] === 1 && matrix[k][j] === 1) {
+              matrix[i][j] = 1;
+            }
+          }
+        }
+      }
+    } else if (action === 'clear') {
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 4; j++) {
+          matrix[i][j] = 0;
+        }
+      }
+    }
+    initMatrixTable();
+  }
+
+  function applyPreset(preset) {
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        const a = i + 1;
+        const b = j + 1;
+        if (preset === 'eq') matrix[i][j] = (a === b) ? 1 : 0;
+        else if (preset === 'le') matrix[i][j] = (a <= b) ? 1 : 0;
+        else if (preset === 'lt') matrix[i][j] = (a < b) ? 1 : 0;
+        else if (preset === 'div') matrix[i][j] = (b % a === 0) ? 1 : 0;
+        else if (preset === 'mod2') matrix[i][j] = (a % 2 === b % 2) ? 1 : 0;
+        else if (preset === 'cycle') matrix[i][j] = ((i + 1) % 4 === j) ? 1 : 0;
+        else if (preset === 'univ') matrix[i][j] = 1;
+        else if (preset === 'empty') matrix[i][j] = 0;
+      }
+    }
+    initMatrixTable();
+  }
+
+  function analyzeRelation() {
+    let allPairs = [];
+    let complementPairs = [];
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        const pairStr = `(${i + 1}, ${j + 1})`;
+        if (matrix[i][j] === 1) {
+          allPairs.push({ i, j, str: pairStr });
+        } else {
+          complementPairs.push(pairStr);
+        }
+      }
+    }
+    const countBadge = document.getElementById('pairs-count-badge');
+    if (countBadge) countBadge.textContent = `|ρ| = ${allPairs.length} пар(и)`;
+
+    const countBadgeDetail = document.getElementById('pairs-count-badge-detail');
+    if (countBadgeDetail) countBadgeDetail.textContent = `|ρ| = ${allPairs.length} з 16 пар`;
+
+    const pairsSetDisplay = document.getElementById('rel-pairs-set-display');
+    if (pairsSetDisplay) {
+      pairsSetDisplay.textContent = allPairs.length > 0 
+        ? `{ ${allPairs.map(p => p.str).join(', ')} }` 
+        : '∅ (порожня множина)';
+    }
+
+    const pairsPillsBox = document.getElementById('rel-pairs-pills');
+    if (pairsPillsBox) {
+      if (allPairs.length === 0) {
+        pairsPillsBox.innerHTML = '<span style="color: var(--text-muted); font-style: italic; font-size: 0.85rem;">Порожнє відношення ρ = ∅ (жодної пари немає). Клікніть на комірку матриці або оберіть пресет.</span>';
+      } else {
+        pairsPillsBox.innerHTML = allPairs.map(p => {
+          let cls = 'pair-pill-dir';
+          let tip = `Одностороння дуга ${p.i + 1} → ${p.j + 1}`;
+          if (p.i === p.j) {
+            cls = 'pair-pill-loop';
+            tip = `Петля (${p.i + 1}, ${p.i + 1}) (рефлексивність)`;
+          } else if (matrix[p.j][p.i] === 1) {
+            cls = 'pair-pill-symm';
+            tip = `Взаємна симетрична пара (${p.i + 1} ⟷ ${p.j + 1})`;
+          }
+          return `<span class="pair-pill ${cls}" title="${tip}. Клікніть щоб видалити" onclick="toggleCell(${p.i}, ${p.j})" onmouseenter="hoverCell(${p.i}, ${p.j})" onmouseleave="unhoverCell(${p.i}, ${p.j})">${p.str}</span>`;
+        }).join(' ');
+      }
+    }
+
+    const complDisplay = document.getElementById('rel-complement-display');
+    if (complDisplay) {
+      complDisplay.textContent = complementPairs.length > 0 
+        ? `{ ${complementPairs.join(', ')} }` 
+        : '∅ (усі 16 пар у відношенні)';
+    }
+    const complCount = document.getElementById('rel-complement-count');
+    if (complCount) complCount.textContent = complementPairs.length;
+
+    // 1. Reflexivity
+    let missingLoops = [];
+    for (let i = 0; i < 4; i++) {
+      if (matrix[i][i] !== 1) missingLoops.push(`(${i + 1}, ${i + 1})`);
+    }
+    const isReflexive = (missingLoops.length === 0);
+
+    // 2. Irreflexivity
+    let existingLoops = [];
+    for (let i = 0; i < 4; i++) {
+      if (matrix[i][i] === 1) existingLoops.push(`(${i + 1}, ${i + 1})`);
+    }
+    const isIrreflexive = (existingLoops.length === 0);
+
+    // 3. Symmetry
+    let asymViolations = [];
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (matrix[i][j] === 1 && matrix[j][i] !== 1) {
+          asymViolations.push(`(${i + 1}, ${j + 1}) ∈ ρ, але (${j + 1}, ${i + 1}) ∉ ρ`);
+        }
+      }
+    }
+    const isSymmetric = (asymViolations.length === 0);
+
+    // 4. Antisymmetry
+    let antiSymViolations = [];
+    for (let i = 0; i < 4; i++) {
+      for (let j = i + 1; j < 4; j++) {
+        if (matrix[i][j] === 1 && matrix[j][i] === 1) {
+          antiSymViolations.push(`(${i + 1} ⟷ ${j + 1})`);
+        }
+      }
+    }
+    const isAntisymmetric = (antiSymViolations.length === 0);
+
+    // 5. Transitivity
+    let transViolations = [];
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (matrix[i][j] === 1) {
+          for (let k = 0; k < 4; k++) {
+            if (matrix[j][k] === 1 && matrix[i][k] !== 1) {
+              transViolations.push(`(${i + 1}→${j + 1} та ${j + 1}→${k + 1}, але нема ${i + 1}→${k + 1})`);
+            }
+          }
+        }
+      }
+    }
+    const isTransitive = (transViolations.length === 0);
+
+    // Populate Diagnostic Cards
+    const propsDiv = document.getElementById('props-container');
+    if (propsDiv) {
+      propsDiv.innerHTML = `
+        <div class="prop-card">
+          <div class="prop-card-header">
+            <span class="prop-card-title">1. Рефлексивність (Reflexivity)</span>
+            <span class="prop-tag ${isReflexive ? 'prop-true' : 'prop-false'}">
+              ${isReflexive ? '✅ Виконується' : '❌ Порушується'}
+            </span>
+          </div>
+          <div class="prop-card-desc">
+            <b>Умова:</b> ∀x ∈ A: (x, x) ∈ ρ (на головній діагоналі тільки 1).<br>
+            ${isReflexive 
+              ? '<span style="color: #34d399;">✓ Усі 4 діагональні петлі присутні: (1,1), (2,2), (3,3), (4,4) ∈ ρ.</span>' 
+              : `<span style="color: #f87171;">✗ Відсутні петлі: { ${missingLoops.join(', ')} }.</span>`}
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-card-header">
+            <span class="prop-card-title">2. Антирефлексивність (Irreflexivity)</span>
+            <span class="prop-tag ${isIrreflexive ? 'prop-true' : 'prop-false'}">
+              ${isIrreflexive ? '✅ Виконується' : '❌ Порушується'}
+            </span>
+          </div>
+          <div class="prop-card-desc">
+            <b>Умова:</b> ∀x ∈ A: (x, x) ∉ ρ (на головній діагоналі тільки 0).<br>
+            ${isIrreflexive 
+              ? '<span style="color: #34d399;">✓ Жодної петлі немає. Жоден елемент не зв\'язаний сам із собою.</span>' 
+              : `<span style="color: #f87171;">✗ Присутні петлі: { ${existingLoops.join(', ')} }.</span>`}
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-card-header">
+            <span class="prop-card-title">3. Симетричність (Symmetry)</span>
+            <span class="prop-tag ${isSymmetric ? 'prop-true' : 'prop-false'}">
+              ${isSymmetric ? '✅ Виконується' : '❌ Порушується'}
+            </span>
+          </div>
+          <div class="prop-card-desc">
+            <b>Умова:</b> ∀x, y: (x, y) ∈ ρ ⇒ (y, x) ∈ ρ (матриця симетрична M = Mᵀ).<br>
+            ${isSymmetric 
+              ? '<span style="color: #34d399;">✓ Матриця повністю симетрична. Кожна стрілка a → b має зворотну b → a.</span>' 
+              : `<span style="color: #f87171;">✗ Несиметричні пари: ${asymViolations.slice(0, 2).join('; ')}.</span>`}
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-card-header">
+            <span class="prop-card-title">4. Антисиметричність (Antisymmetry)</span>
+            <span class="prop-tag ${isAntisymmetric ? 'prop-true' : 'prop-false'}">
+              ${isAntisymmetric ? '✅ Виконується' : '❌ Порушується'}
+            </span>
+          </div>
+          <div class="prop-card-desc">
+            <b>Умова:</b> (x, y) ∈ ρ ∧ (y, x) ∈ ρ ⇒ x = y (немає зустрічних стрілок між різними вершинами).<br>
+            ${isAntisymmetric 
+              ? '<span style="color: #34d399;">✓ Жодних взаємних циклів довжини 2 між різними вершинами немає.</span>' 
+              : `<span style="color: #f87171;">✗ Знайдено взаємні стрілки: ${antiSymViolations.join(', ')}.</span>`}
+          </div>
+        </div>
+
+        <div class="prop-card">
+          <div class="prop-card-header">
+            <span class="prop-card-title">5. Транзитивність (Transitivity)</span>
+            <span class="prop-tag ${isTransitive ? 'prop-true' : 'prop-false'}">
+              ${isTransitive ? '✅ Виконується' : '❌ Порушується'}
+            </span>
+          </div>
+          <div class="prop-card-desc">
+            <b>Умова:</b> (x, y) ∈ ρ ∧ (y, z) ∈ ρ ⇒ (x, z) ∈ ρ (кожен 2-кроковий шлях має пряме ребро).<br>
+            ${isTransitive 
+              ? '<span style="color: #34d399;">✓ Усі транзитивні шляхи замикаються.</span>' 
+              : `<span style="color: #f87171;">✗ Розірваний шлях: ${transViolations.slice(0, 2).join('; ')}.</span>`}
+          </div>
+        </div>
+      `;
+    }
+
+    // Classification & Equivalence classes
+    let bannerSymbol = 'ρ';
+    let bannerName = 'Загальне бінарне відношення';
+    let bannerBadge = 'Орієнтований граф';
+    let bannerFormal = `Кількість пар |ρ| = ${allPairs.length} із 16 можливих у декартовому добутку A²`;
+    let bannerMnemonic = '💡 <b>Мнемоніка:</b> Довільна конфігурація зв\'язків. Скористайтесь кнопками пресетів для дослідження класичних типів!';
+    let bannerColor = '#94a3b8';
+    let classBoxHtml = '';
+    let nodeClusterColors = { 0: null, 1: null, 2: null, 3: null };
+
+    if (isReflexive && isSymmetric && isTransitive) {
+      bannerSymbol = '≡';
+      bannerName = 'Відношення еквівалентності (Equivalence)';
+      bannerBadge = 'Факторизація A/ρ • Кластери';
+      bannerFormal = 'Рефлексивне (R) + Симетричне (S) + Транзитивне (T)';
+      bannerMnemonic = '💡 <b>Мнемоніка:</b> «Острівці однакових» — розбиває множину A на ізольовані взаємопов\'язані класи еквівалентності!';
+      bannerColor = '#10b981';
+
+      let visited = new Set();
+      let eqClasses = [];
+      const palette = ['#38bdf8', '#a855f7', '#10b981', '#f59e0b'];
+
+      for (let i = 0; i < 4; i++) {
+        if (!visited.has(i)) {
+          let cls = [];
+          for (let j = 0; j < 4; j++) {
+            if (matrix[i][j] === 1) {
+              cls.push(j);
+              visited.add(j);
+            }
+          }
+          cls.sort((a, b) => a - b);
+          eqClasses.push(cls);
+        }
+      }
+
+      eqClasses.forEach((cls, idx) => {
+        const col = palette[idx % palette.length];
+        cls.forEach(nodeIdx => {
+          nodeClusterColors[nodeIdx] = col;
+        });
+      });
+
+      const pillsHtml = eqClasses.map((cls, idx) => {
+        const col = palette[idx % palette.length];
+        const items = cls.map(x => x + 1).join(', ');
+        return `<span class="factor-pill" style="background: ${col}22; border-color: ${col}; color: #fff;">[${cls[0] + 1}] = { ${items} }</span>`;
+      }).join(' ');
+
+      classBoxHtml = `
+        <div style="font-weight: 700; color: #10b981; margin-bottom: 6px;">⭐ ВІДНОШЕННЯ ЕКВІВАЛЕНТНОСТІ (Фактор-множина A/ρ):</div>
+        <div style="margin-bottom: 6px;">Множина A розбита на <b>${eqClasses.length}</b> клас(ів) еквівалентності:</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 6px;">${pillsHtml}</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">
+          <b>Властивість класів:</b> вони попарно диз'юнктні ([a] ∩ [b] = ∅) і в об'єднанні покривають усю множину A. Вершини однакового класу підсвічені одним кольором.
+        </div>
+      `;
+    } else if (isReflexive && isAntisymmetric && isTransitive) {
+      bannerSymbol = '≼';
+      bannerName = 'Відношення нестрогого часткового порядку (Poset)';
+      bannerBadge = 'Частковий порядок • Посет';
+      bannerFormal = 'Рефлексивне (R) + Антисиметричне (AS) + Транзитивне (T)';
+      bannerMnemonic = '💡 <b>Мнемоніка:</b> Ієрархія та підпорядкування (як ≤ або ділимість a|b). Рух лише «вперед/вгору», циклів немає!';
+      bannerColor = '#38bdf8';
+
+      classBoxHtml = `
+        <div style="font-weight: 700; color: #38bdf8; margin-bottom: 6px;">⭐ ЧАСТКОВИЙ ПОРЯДОК (POSET):</div>
+        <div>Задовольняє аксіоми R + AS + T. Утворює ієрархічний скелет без взаємних петель між різними вершинами.</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted); margin-top: 4px;">
+          Таке відношення можна згорнути у <b>діаграму Гассе</b> (видаливши рефлексивні петлі та транзитивні хорди).
+        </div>
+      `;
+    } else if (isIrreflexive && isAntisymmetric && isTransitive) {
+      bannerSymbol = '≺';
+      bannerName = 'Відношення строгого порядку (Strict Order)';
+      bannerBadge = 'Строге домінування';
+      bannerFormal = 'Антирефлексивне (IR) + Антисиметричне (AS) + Транзитивне (T)';
+      bannerMnemonic = '💡 <b>Мнемоніка:</b> «Строге випередження» (як <). Жоден елемент не зв\'язаний сам із собою, граф строго ациклічний (DAG).';
+      bannerColor = '#f59e0b';
+
+      classBoxHtml = `
+        <div style="font-weight: 700; color: #f59e0b; margin-bottom: 6px;">⭐ СТРОГИЙ ЧАСТКОВИЙ ПОРЯДОК:</div>
+        <div>Виконується IR + AS + T. Орграф є спрямованим ациклічним графом (DAG) без жодної петлі.</div>
+      `;
+    } else if (isReflexive && isSymmetric) {
+      bannerSymbol = '≈';
+      bannerName = 'Відношення толерантності (Tolerance)';
+      bannerBadge = 'Схожість / Сумісність';
+      bannerFormal = 'Рефлексивне (R) + Симетричне (S) [Транзитивність порушена]';
+      bannerMnemonic = '💡 <b>Мнемоніка:</b> «Схожість або знайомство». Якщо A схоже на B, а B схоже на C, то A не обов\'язково схоже на C!';
+      bannerColor = '#c084fc';
+
+      classBoxHtml = `
+        <div style="font-weight: 700; color: #c084fc; margin-bottom: 6px;">⭐ ВІДНОШЕННЯ ТОЛЕРАНТНОСТІ:</div>
+        <div>Рефлексивне та симетричне, але <b>не транзитивне</b>. Моделює відношення сумісності, подібності або близькості.</div>
+      `;
+    } else {
+      bannerSymbol = 'ρ';
+      bannerName = 'Загальне бінарне відношення';
+      bannerBadge = 'Орграф • Матриця';
+      bannerFormal = `ρ ⊆ A × A = { (a, b) | a, b ∈ {1, 2, 3, 4} }`;
+      bannerMnemonic = '💡 <b>Мнемоніка:</b> Довільна конфігурація напрямлених зв\'язків. Клікайте по комірках матриці або обирайте готові пресети!';
+      bannerColor = '#94a3b8';
+
+      classBoxHtml = `
+        <div style="font-weight: 600; color: #fff; margin-bottom: 4px;">Довільне бінарне відношення на множині A:</div>
+        <div style="font-size: 0.82rem; color: var(--text-muted);">
+          Не задовольняє повні набори аксіом еквівалентності або порядку. Переглядайте картки діагностики властивостей нижче.
+        </div>
+      `;
+    }
+
+    // Always append explicit elements list to the summary box as well
+    classBoxHtml += `
+      <div style="margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.08); font-family: var(--code-font); font-size: 0.82rem;">
+        <span style="color: var(--text-muted);">Елементи множини відношення (|ρ| = ${allPairs.length}):</span><br>
+        <span style="color: #38bdf8;">ρ = { ${allPairs.map(p => p.str).join(', ') || '∅ (порожнє відношення)'} }</span>
+      </div>
+    `;
+
+    // Update Top Banner DOM
+    const banner = document.getElementById('rel-symbol-banner');
+    const icon = document.getElementById('rel-symbol-icon');
+    if (banner && icon) {
+      banner.style.borderLeftColor = bannerColor;
+      icon.textContent = bannerSymbol;
+      icon.style.color = bannerColor;
+      icon.style.borderColor = bannerColor;
+      icon.style.boxShadow = `0 0 18px ${bannerColor}44`;
+      document.getElementById('rel-symbol-name').textContent = bannerName;
+      const typeBadge = document.getElementById('rel-type-badge');
+      if (typeBadge) {
+        typeBadge.textContent = bannerBadge;
+        typeBadge.style.color = bannerColor;
+      }
+      document.getElementById('rel-symbol-formal').textContent = bannerFormal;
+      document.getElementById('rel-symbol-mnemonic').innerHTML = bannerMnemonic;
+    }
+
+    const classBox = document.getElementById('rel-class-box');
+    if (classBox) classBox.innerHTML = classBoxHtml;
+
+    drawRelationGraph(nodeClusterColors);
+  }
+
+  function drawRelationGraph(clusterColors = {}) {
+    const svg = document.getElementById('graph-svg');
+    if (!svg) return;
+
+    const coords = [
+      { x: 95, y: 55, id: 1, angle: -0.75 * Math.PI },
+      { x: 265, y: 55, id: 2, angle: -0.25 * Math.PI },
+      { x: 265, y: 165, id: 3, angle: 0.25 * Math.PI },
+      { x: 95, y: 165, id: 4, angle: 0.75 * Math.PI }
+    ];
+    const nodeR = 16;
+
+    let svgHtml = `
+      <defs>
+        <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#c084fc"/>
+        </marker>
+        <marker id="arrow-emerald" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#34d399"/>
+        </marker>
+        <marker id="arrow-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1.5 L 9 5 L 0 8.5 z" fill="#38bdf8"/>
+        </marker>
+      </defs>
+    `;
+
+    // 1. Draw Edges between distinct nodes (i != j)
+    for (let i = 0; i < 4; i++) {
+      for (let j = 0; j < 4; j++) {
+        if (i !== j && matrix[i][j] === 1) {
+          const c1 = coords[i];
+          const c2 = coords[j];
+          const isMutual = (matrix[j][i] === 1);
+
+          const dx = c2.x - c1.x;
+          const dy = c2.y - c1.y;
+          const dist = Math.hypot(dx, dy);
+          const ux = dx / dist;
+          const uy = dy / dist;
+
+          // Right-hand normal vector
+          const nx = -uy;
+          const ny = ux;
+
+          const sx = c1.x + ux * nodeR;
+          const sy = c1.y + uy * nodeR;
+          const ex = c2.x - ux * (nodeR + 2);
+          const ey = c2.y - uy * (nodeR + 2);
+
+          const mx = (c1.x + c2.x) / 2;
+          const my = (c1.y + c2.y) / 2;
+
+          // If mutual, curve with offset 18 so i->j and j->i bulge on opposite sides without collision
+          const offset = isMutual ? 18 : 6;
+          const cx = mx + nx * offset;
+          const cy = my + ny * offset;
+
+          const strokeColor = isMutual ? '#34d399' : '#c084fc';
+          const markerUrl = isMutual ? 'url(#arrow-emerald)' : 'url(#arrow-purple)';
+
+          svgHtml += `<path d="M ${sx} ${sy} Q ${cx} ${cy} ${ex} ${ey}" fill="none" stroke="${strokeColor}" stroke-width="2" marker-end="${markerUrl}" opacity="0.9"/>`;
+        }
+      }
+    }
+
+    // 2. Draw Self-Loops (i === j)
+    for (let i = 0; i < 4; i++) {
+      if (matrix[i][i] === 1) {
+        const c = coords[i];
+        const theta = c.angle;
+        const alpha = 32 * Math.PI / 180;
+
+        const sx = c.x + nodeR * Math.cos(theta - alpha);
+        const sy = c.y + nodeR * Math.sin(theta - alpha);
+
+        const ex = c.x + (nodeR + 2) * Math.cos(theta + alpha);
+        const ey = c.y + (nodeR + 2) * Math.sin(theta + alpha);
+
+        const cx1 = c.x + (nodeR + 32) * Math.cos(theta - 0.25);
+        const cy1 = c.y + (nodeR + 32) * Math.sin(theta - 0.25);
+
+        const cx2 = c.x + (nodeR + 32) * Math.cos(theta + 0.25);
+        const cy2 = c.y + (nodeR + 32) * Math.sin(theta + 0.25);
+
+        svgHtml += `<path d="M ${sx} ${sy} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${ex} ${ey}" fill="none" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-cyan)"/>`;
+      }
+    }
+
+    // 3. Draw Nodes with equivalence cluster colors
+    coords.forEach((c, idx) => {
+      const clusterCol = clusterColors[idx];
+      const strokeColor = clusterCol || '#38bdf8';
+      const glowFilter = clusterCol ? `filter="drop-shadow(0 0 6px ${clusterCol}aa)"` : '';
+
+      svgHtml += `
+        <g class="graph-node" data-node="${c.id}" ${glowFilter}>
+          <circle cx="${c.x}" cy="${c.y}" r="${nodeR}" fill="#0f172a" stroke="${strokeColor}" stroke-width="2.5"/>
+          <text x="${c.x}" y="${c.y + 4.5}" text-anchor="middle" fill="#ffffff" font-size="13" font-weight="700" font-family="system-ui, sans-serif">${c.id}</text>
+        </g>
+      `;
+    });
+
+    svg.innerHTML = svgHtml;
+  }
+
+  // --- COMBINATORICS LAB & DECISION TREE ---
+  let wizardAnswers = {
+    all: 'part',
+    order: 'no',
+    repeat: 'no'
+  };
+
+  function setWizardStep(key, val) {
+    wizardAnswers[key] = val;
+    document.querySelectorAll(`[data-wiz-key="${key}"]`).forEach(btn => {
+      if (btn.getAttribute('data-wiz-val') === val) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+
+    const orderBox = document.getElementById('wiz-order-box');
+    if (orderBox) {
+      if (wizardAnswers.all === 'all') {
+        orderBox.style.opacity = '0.35';
+        orderBox.style.pointerEvents = 'none';
+      } else {
+        orderBox.style.opacity = '1';
+        orderBox.style.pointerEvents = 'auto';
+      }
+    }
+
+    let targetType = 'Cnk';
+    let rationale = '';
+
+    if (wizardAnswers.all === 'all') {
+      if (wizardAnswers.repeat === 'no') {
+        targetType = 'Pn';
+        rationale = 'Беруть участь усі n елементів, без повторень ⇒ <b>Перестановки без повторень: P_n = n!</b>';
+      } else {
+        targetType = 'Pn_rep';
+        rationale = 'Беруть участь усі n елементів, є однакові/повторення ⇒ <b>Перестановки з повтореннями: P_n(k₁, k₂, ...)</b>';
+      }
+    } else {
+      if (wizardAnswers.order === 'yes') {
+        if (wizardAnswers.repeat === 'no') {
+          targetType = 'Ank';
+          rationale = 'Обираємо k з n, порядок важливий, без повторень ⇒ <b>Розміщення без повторень: A_n^k</b>';
+        } else {
+          targetType = 'Ank_rep';
+          rationale = 'Обираємо k з n, порядок важливий, елементи повторюються ⇒ <b>Розміщення з повтореннями: Ā_n^k = n^k</b>';
+        }
+      } else {
+        if (wizardAnswers.repeat === 'no') {
+          targetType = 'Cnk';
+          rationale = 'Обираємо k з n, порядок НЕ важливий, без повторень ⇒ <b>Комбінації без повторень: C_n^k</b>';
+        } else {
+          targetType = 'Cnk_rep';
+          rationale = 'Обираємо k з n, порядок НЕ важливий, елементи повторюються ⇒ <b>Комбінації з повтореннями: C̄_n^k</b>';
+        }
+      }
+    }
+
+    const recBox = document.getElementById('wizard-recommendation-box');
+    if (recBox) {
+      recBox.innerHTML = `
+        <div>
+          <div style="color: #38bdf8; font-weight: 700; font-size: 0.85rem;">🎯 Рекомендована конфігурація:</div>
+          <div style="color: #fff; font-size: 0.88rem;">${rationale}</div>
+        </div>
+        <button class="btn btn-sm" onclick="selectCombType('${targetType}')" style="background: rgba(56, 189, 248, 0.2); border-color: #38bdf8; color: #fff;">
+          ⚡ Застосувати в калькуляторі (${targetType})
+        </button>
+      `;
+    }
+  }
+
+  function selectCombType(type) {
+    const sel = document.getElementById('comb-type');
+    if (sel) {
+      sel.value = type;
+      calcComb();
+    }
+    updateDecisionTreeHighlight(type);
+  }
+
+  function updateDecisionTreeHighlight(type) {
+    document.querySelectorAll('.flow-card').forEach(c => c.classList.remove('active-flow'));
+    const activeCard = document.getElementById(`flow-card-${type}`);
+    if (activeCard) {
+      activeCard.classList.add('active-flow');
+    }
+  }
+
+  function fact(n) {
+    if (n < 0) return 0;
+    let res = 1n;
+    for (let i = 2n; i <= BigInt(n); i++) res *= i;
+    return res;
+  }
+
+  function calcComb() {
+    const type = document.getElementById('comb-type').value;
+    const stdBox = document.getElementById('standard-inputs');
+    const anagBox = document.getElementById('anagram-inputs');
+    const boxK = document.getElementById('box-k');
+
+    if (type === 'Pn_rep') {
+      stdBox.style.display = 'none';
+      anagBox.style.display = 'block';
+    } else {
+      stdBox.style.display = 'block';
+      anagBox.style.display = 'none';
+      boxK.style.display = (type === 'Pn') ? 'none' : 'block';
+    }
+
+    const n = parseInt(document.getElementById('inp-n').value) || 0;
+    const k = parseInt(document.getElementById('inp-k').value) || 0;
+    let resVal = 0n;
+    let formulaText = '';
+    let samples = [];
+
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
+    const activeLetters = letters.slice(0, Math.min(n, 10));
+
+    if (type === 'Pn') {
+      resVal = fact(n);
+      formulaText = `P_${n} = ${n}! = ${Array.from({length: n}, (_, i) => n - i).join(' · ')}`;
+      samples = generatePermutations(activeLetters.slice(0, Math.min(n, 4))).slice(0, 40);
+    } else if (type === 'Ank') {
+      if (k > n) { resVal = 0n; formulaText = 'k > n ⇒ A_n^k = 0'; }
+      else {
+        resVal = fact(n) / fact(n - k);
+        formulaText = `A_${n}^${k} = ${n}! / (${n} - ${k})! = ${Array.from({length: k}, (_, i) => n - i).join(' · ')}`;
+        samples = generateArrangements(activeLetters.slice(0, Math.min(n, 5)), Math.min(k, 3)).slice(0, 40);
+      }
+    } else if (type === 'Cnk') {
+      if (k > n) { resVal = 0n; formulaText = 'k > n ⇒ C_n^k = 0'; }
+      else {
+        resVal = fact(n) / (fact(k) * fact(n - k));
+        formulaText = `C_${n}^${k} = ${n}! / (${k}! · (${n} - ${k})!) = (${Array.from({length: k}, (_, i) => n - i).join(' · ')}) / (${Array.from({length: k}, (_, i) => k - i).join(' · ')})`;
+        samples = generateCombinations(activeLetters.slice(0, Math.min(n, 6)), Math.min(k, 4)).slice(0, 40);
+      }
+    } else if (type === 'Ank_rep') {
+      resVal = BigInt(n) ** BigInt(k);
+      formulaText = `Ā_${n}^${k} = ${n}^${k} = ${Array(Math.min(k, 6)).fill(n).join(' · ')}${k > 6 ? ' ...' : ''}`;
+      samples = generateArrangementsWithRep(activeLetters.slice(0, Math.min(n, 3)), Math.min(k, 3)).slice(0, 40);
+    } else if (type === 'Cnk_rep') {
+      const top = n + k - 1;
+      resVal = fact(top) / (fact(k) * fact(n - 1));
+      formulaText = `C̄_${n}^${k} = C_(${n}+${k}-1)^${k} = C_${top}^${k} = ${top}! / (${k}! · ${n-1}!)`;
+      samples = generateCombinationsWithRep(activeLetters.slice(0, Math.min(n, 4)), Math.min(k, 3)).slice(0, 40);
+    } else if (type === 'Pn_rep') {
+      const word = document.getElementById('inp-word').value.toUpperCase().replace(/[^A-ZА-ЯІЇЄҐ]/g, '');
+      const counts = {};
+      for (const ch of word) counts[ch] = (counts[ch] || 0) + 1;
+      let denom = 1n;
+      let denomParts = [];
+      for (const ch in counts) {
+        denom *= fact(counts[ch]);
+        denomParts.push(`${ch}:${counts[ch]}!`);
+      }
+      resVal = fact(word.length) / denom;
+      formulaText = `P_${word.length}(${Object.values(counts).join(', ')}) = ${word.length}! / (${denomParts.join(' · ')})`;
+      samples = [`Слово: "${word}"`, `Довжина: ${word.length}`, `Унікальних літер: ${Object.keys(counts).length}`];
+    }
+
+    document.getElementById('comb-formula-box').textContent = formulaText;
+    document.getElementById('comb-result-val').textContent = resVal.toLocaleString('uk-UA');
+    updateDecisionTreeHighlight(type);
+
+    const sampleBox = document.getElementById('samples-container');
+    if (samples.length > 0) {
+      sampleBox.innerHTML = samples.map(s => `<span class="sample-pill">${s}</span>`).join(' ');
+    } else {
+      sampleBox.innerHTML = 'Немає варіантів для відображення.';
+    }
+  }
+
+  function generatePermutations(arr) {
+    if (arr.length <= 1) return [arr.join('')];
+    let res = [];
+    for (let i = 0; i < arr.length; i++) {
+      const current = arr[i];
+      const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
+      const subPerms = generatePermutations(remaining);
+      for (const p of subPerms) res.push(current + p);
+    }
+    return res;
+  }
+
+  function generateCombinations(arr, k) {
+    if (k === 0) return ['∅'];
+    if (k === 1) return arr.map(x => `{${x}}`);
+    let res = [];
+    for (let i = 0; i < arr.length; i++) {
+      const head = arr[i];
+      const tail = arr.slice(i + 1);
+      const sub = generateCombinations(tail, k - 1);
+      for (const s of sub) {
+        res.push(`{${head}, ${s.replace(/[{}]/g, '')}}`);
+      }
+    }
+    return res;
+  }
+
+  function generateArrangements(arr, k) {
+    if (k === 0) return ['()'];
+    if (k === 1) return arr.map(x => `(${x})`);
+    let res = [];
+    for (let i = 0; i < arr.length; i++) {
+      const head = arr[i];
+      const remaining = arr.slice(0, i).concat(arr.slice(i + 1));
+      const sub = generateArrangements(remaining, k - 1);
+      for (const s of sub) res.push(`(${head}, ${s.replace(/[()]/g, '')})`);
+    }
+    return res;
+  }
+
+  function generateArrangementsWithRep(arr, k) {
+    if (k === 0) return [''];
+    if (k === 1) return arr;
+    let res = [];
+    const sub = generateArrangementsWithRep(arr, k - 1);
+    for (const a of arr) {
+      for (const s of sub) res.push(a + s);
+    }
+    return res;
+  }
+
+  function generateCombinationsWithRep(arr, k) {
+    if (k === 0) return ['∅'];
+    let res = [];
+    function backtrack(start, combo) {
+      if (combo.length === k) {
+        res.push(`[${combo.join(', ')}]`);
+        return;
+      }
+      for (let i = start; i < arr.length; i++) {
+        combo.push(arr[i]);
+        backtrack(i, combo);
+        combo.pop();
+        if (res.length >= 40) return;
+      }
+    }
+    backtrack(0, []);
+    return res;
+  }
+
+  // Init on load
+  window.onload = function() {
+    updateSets();
+    initMatrixTable();
+    calcComb();
+  };
+</script>
+
+</body>
+</html>
