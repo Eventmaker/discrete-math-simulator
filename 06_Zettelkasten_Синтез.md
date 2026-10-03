@@ -2,9 +2,9 @@
 type: learning-zettel-distillation
 course: "Вища математика / Дискретні структури (2 курс)"
 module: "М1: Теорія множин, бінарні відношення та елементи комбінаторики"
-institution: "ДУІКТ"
+institution: "Self-Study"
 status: ready
-provenance: "Лекції кафедри вищої математики ДУІКТ"
+provenance: "Теорія множин та комбінаторика"
 tags:
   - zettelkasten
   - permanent-note

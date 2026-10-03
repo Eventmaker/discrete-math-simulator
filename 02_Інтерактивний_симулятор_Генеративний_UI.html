@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Інтерактивна лабораторія: Теорія множин, відношення та комбінаторика (ДУІКТ)</title>
+  <title>Інтерактивна лабораторія: Теорія множин, відношення та комбінаторика</title>
   <style>
     :root {
       --bg: #0b0f19;
@@ -254,6 +254,11 @@
       color: #93c5fd;
       font-size: 0.95rem;
       margin: 4px 0 8px 0;
+    }
+    .op-mnemonic {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.45;
     }
     .op-desc-grid {
       display: grid;
@@ -829,7 +834,7 @@
 <div class="container">
   <header>
     <div>
-      <h1>📐 Лабораторія дискретного аналізу <span class="badge">ДУІКТ • 2 курс</span></h1>
+      <h1>📐 Лабораторія дискретного аналізу <span class="badge">Дискретна математика</span></h1>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 4px;">Інтерактивне моделювання: Множини, Бінарні відношення, Комбінаторні простори</p>
     </div>
     <div>
@@ -847,7 +852,7 @@
 
   <!-- TAB 1: SETS -->
   <section id="tab-sets" class="tab-content active">
-    <!-- Top Operator Symbol & Comprehensive Explanation Banner -->
+    <!-- Top Operator Symbol Banner -->
     <div class="op-symbol-card" id="op-symbol-banner" style="margin-bottom: 20px;">
       <div class="symbol-badge" id="op-symbol-icon">∪</div>
       <div class="op-details">
@@ -856,16 +861,14 @@
           <span class="badge" id="op-logic-badge" style="background: rgba(56, 189, 248, 0.2); color: var(--accent);">Логічне «АБО» (OR / ∨)</span>
         </div>
         <div class="op-formula" id="op-symbol-formal">A ∪ B = { x ∈ U | x ∈ A ∨ x ∈ B }</div>
-        
-        <!-- Comprehensive 4-Column Educational Breakdown Grid -->
-        <div class="op-desc-grid" id="op-desc-grid">
-          <!-- Dynamically populated by JS updateSets() -->
+        <div class="op-mnemonic" id="op-symbol-mnemonic">
+          💡 <b>Мнемоніка:</b> «Чаша» відкрита догори ∪ — збираємо та насипаємо елементи з ОБОХ кіл разом!
         </div>
       </div>
     </div>
 
     <div class="grid-2">
-      <!-- Left Column: Controls, Presets, and Subset Check -->
+      <!-- Left Column: Controls, Presets, and Operations -->
       <div class="card">
         <div class="card-title">⚙️ Вхідні множини та Універсум U</div>
         <label>Універсум U (базовий простір, через кому):</label>
@@ -906,11 +909,6 @@
           <button class="btn" onclick="setOp('compA')"><span class="btn-sym">A'</span> Доповнення A̅</button>
           <button class="btn" onclick="setOp('compB')"><span class="btn-sym">B'</span> Доповнення B̅</button>
           <button class="btn" onclick="setOp('subsetTest')"><span class="btn-sym">⊂</span> Підмножина (A ⊂ B?)</button>
-        </div>
-
-        <!-- Real-time Subsets Inspector Box -->
-        <div class="subset-checker-box" id="subset-check-box">
-          <!-- Populated by JS -->
         </div>
       </div>
 
@@ -1004,16 +1002,39 @@
           </div>
         </div>
 
-        <!-- Quantitative Stats Bar -->
-        <div style="display: flex; gap: 12px; font-size: 0.83rem; color: var(--text-muted); flex-wrap: wrap; margin-top: 10px; padding-top: 8px; border-top: 1px solid #1c273e;">
-          <div>|A| = <b id="card-a" style="color: #38bdf8;">5</b></div>
-          <div>|B| = <b id="card-b" style="color: #a855f7;">5</b></div>
-          <div>|A ∩ B| = <b id="card-inter" style="color: #10b981;">2</b></div>
-          <div>|A ∪ B| = <b id="card-union" style="color: #f8fafc;">8</b></div>
-          <div>|A \ B| = <b id="card-diff-ab" style="color: #38bdf8;">3</b></div>
-          <div>|B \ A| = <b id="card-diff-ba" style="color: #a855f7;">3</b></div>
-          <div>|A △ B| = <b id="card-sym" style="color: #f59e0b;">6</b></div>
-          <div>|U| = <b id="card-u" style="color: #94a3b8;">10</b></div>
+        <!-- Sets Characteristics & Properties Panel -->
+        <div class="subset-checker-box" id="sets-characteristics-card" style="margin-top: 14px;">
+          <div style="font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 0.9rem; display: flex; align-items: center; justify-content: space-between;">
+            <span>📊 Характеристики та властивості множин:</span>
+            <span id="subset-badge" class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">A ⊆ B</span>
+          </div>
+
+          <!-- Quantitative Stats Badges Grid -->
+          <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700;">Потужності (кардинальні числа):</div>
+          <div style="display: flex; gap: 8px; font-size: 0.82rem; flex-wrap: wrap; margin-bottom: 12px;">
+            <span class="badge" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);">|A| = <b id="card-a">5</b></span>
+            <span class="badge" style="background: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3);">|B| = <b id="card-b">5</b></span>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3);">|A ∩ B| = <b id="card-inter">2</b></span>
+            <span class="badge" style="background: rgba(248, 250, 252, 0.1); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.2);">|A ∪ B| = <b id="card-union">8</b></span>
+            <span class="badge" style="background: rgba(56, 189, 248, 0.1); color: #93c5fd; border: 1px solid rgba(56, 189, 248, 0.2);">|A \ B| = <b id="card-diff-ab">3</b></span>
+            <span class="badge" style="background: rgba(168, 85, 247, 0.1); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.2);">|B \ A| = <b id="card-diff-ba">3</b></span>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3);">|A △ B| = <b id="card-sym">6</b></span>
+            <span class="badge" style="background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3);">|U| = <b id="card-u">10</b></span>
+          </div>
+
+          <!-- Relations Diagnostics -->
+          <div style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; font-weight: 700;">Відношення та топологічні властивості:</div>
+          <div id="subset-check-box" style="line-height: 1.55;">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- 4-Column Operational Educational Breakdown -->
+        <div style="margin-top: 18px; margin-bottom: 8px; font-weight: 700; color: #fff; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+          <span>🧠 Характеристики та детальний розбір операції:</span>
+        </div>
+        <div class="op-desc-grid" id="op-desc-grid">
+          <!-- Populated by JS updateSets() -->
         </div>
       </div>
     </div>
@@ -1298,7 +1319,7 @@
                     <span style="font-size: 0.72rem; color: var(--success); font-weight: 700;">C_n^k</span>
                   </div>
                   <div style="font-weight: 700; font-size: 0.88rem; color: #fff; margin-top: 2px; font-family: var(--code-font);">C_n^k = n! / (k!(n-k)!)</div>
-                  <div style="font-size: 0.69rem; color: #34d399; margin-top: 2px;">📍 Вибір 3 делегатів із 20 студентів</div>
+                  <div style="font-size: 0.69rem; color: #34d399; margin-top: 2px;">📍 Вибір 3 делегатів із 20 кандидатів</div>
                 </div>
 
                 <!-- Cnk_rep -->
@@ -1477,7 +1498,7 @@
               <td><span class="flow-badge-no">Ні</span></td>
               <td><span class="flow-badge-no">Ні</span></td>
               <td><code>n! / (k! · (n - k)!)</code></td>
-              <td>Вибір 3 делегатів із 25 студентів, лотерея 6 із 45, роздача карт</td>
+              <td>Вибір 3 делегатів із 25 учасників, лотерея 6 із 45, роздача карт</td>
             </tr>
             <tr style="cursor: pointer;" onclick="selectCombType('Cnk_rep')">
               <td><b>Комбінації з повтореннями</b></td>
@@ -1503,7 +1524,7 @@
           <span class="footer-app-name">Лабораторія дискретного аналізу</span>
         </div>
         <p class="footer-desc">
-          Інтерактивний генеративний симулятор для вивчення курсу «Дискретна математика» (Теорія множин, Діаграми Ейлера-Венна, Бінарні відношення, Комбінаторика). Створено для студентів ДУІКТ, Київ.
+          Інтерактивний генеративний симулятор для дослідження курсу «Дискретна математика» (Теорія множин, Діаграми Ейлера-Венна, Бінарні відношення, Комбінаторика). Розроблено автором для себе з метою практичного дослідження, візуалізації та глибокого засвоєння теми.
         </p>
       </div>
       <div class="footer-right">
@@ -1512,7 +1533,7 @@
           <div class="author-info">
             <div class="author-role">Автор та розробник</div>
             <div class="author-name">Юрій Пітуля (<span style="color: #38bdf8;">Jurij Pitulja</span>)</div>
-            <div class="author-handle">@Eventmaker • ДУІКТ</div>
+            <div class="author-handle">@Eventmaker • GitHub</div>
           </div>
         </div>
         <div class="footer-links">
@@ -1529,7 +1550,7 @@
     </div>
     <div class="footer-bottom">
       <div>© 2026 Jurij Pitulja (Eventmaker). Ліцензія Apache 2.0 — Відкритий вихідний код.</div>
-      <div>Державний університет інформаційно-комунікаційних технологій (ДУІКТ)</div>
+      <div>Інтерактивне візуальне моделювання дискретних структур</div>
     </div>
   </footer>
 </div>
@@ -2161,29 +2182,56 @@
     if (cardSym) cardSym.textContent = symDiff.length;
     if (cardU) cardU.textContent = U.length;
 
-    // Update Subset & Equality Inspector Card
+    // Update Subset Badge and Relations Diagnostics Panel
+    const subBadge = document.getElementById('subset-badge');
+    if (subBadge) {
+      if (isEqual) {
+        subBadge.textContent = 'A = B (Рівні множини)';
+        subBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+        subBadge.style.color = '#34d399';
+      } else if (isProperSubset) {
+        subBadge.textContent = 'A ⊂ B (Строга підмножина)';
+        subBadge.style.background = 'rgba(16, 185, 129, 0.2)';
+        subBadge.style.color = '#34d399';
+      } else if (isDisjoint) {
+        subBadge.textContent = 'A ∩ B = ∅ (Диз\'юнктні)';
+        subBadge.style.background = 'rgba(245, 158, 11, 0.2)';
+        subBadge.style.color = '#fbbf24';
+      } else {
+        subBadge.textContent = 'A ⊄ B (Перетинаються)';
+        subBadge.style.background = 'rgba(56, 189, 248, 0.2)';
+        subBadge.style.color = '#38bdf8';
+      }
+    }
+
     let subHtml = `
-      <div style="font-weight: 700; color: #fff; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-        🔍 Відношення між A та B:
-      </div>
-      <div style="display: grid; gap: 4px;">
-        <div>• <b>Підмножина (A ⊆ B):</b> ${isSubset 
-          ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК (усі елементи A містяться в B)</span>' 
-          : `<span style="color: var(--danger); font-weight: 700;">❌ НІ (елементи {${onlyA.join(', ')}} не належать B)</span>`}
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px; font-size: 0.82rem;">
+        <div style="background: rgba(9, 14, 26, 0.6); padding: 7px 10px; border-radius: 6px; border: 1px solid #1c273e;">
+          • <b>A ⊆ B (Підмножина):</b> ${isSubset 
+            ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК</span> (A входить до B)' 
+            : `<span style="color: var(--danger); font-weight: 700;">❌ НІ</span> ({${onlyA.slice(0, 4).join(', ')}${onlyA.length > 4 ? '...' : ''}} поза B)`}
         </div>
-        <div>• <b>Власна (строга) підмножина (A ⊂ B):</b> ${isProperSubset 
-          ? `<span style="color: var(--success); font-weight: 700;">✅ ТАК (строга, бо A ⊆ B та A ≠ B, в B є ще {${onlyB.join(', ')}})</span>` 
-          : (isEqual 
-            ? '<span style="color: var(--warning); font-weight: 700;">⚠️ НІ (A = B, це невласна підмножина)</span>' 
-            : '<span style="color: var(--danger); font-weight: 700;">❌ НІ (A не є підмножиною B)</span>')}
+        <div style="background: rgba(9, 14, 26, 0.6); padding: 7px 10px; border-radius: 6px; border: 1px solid #1c273e;">
+          • <b>A ⊂ B (Власна строга):</b> ${isProperSubset 
+            ? `<span style="color: var(--success); font-weight: 700;">✅ ТАК</span> (в B є ще {${onlyB.slice(0, 3).join(', ')}${onlyB.length > 3 ? '...' : ''}})` 
+            : (isEqual 
+              ? '<span style="color: var(--warning); font-weight: 700;">⚠️ НІ (A = B)</span>' 
+              : '<span style="color: var(--danger); font-weight: 700;">❌ НІ</span>')}
         </div>
-        <div>• <b>Рівність (A = B):</b> ${isEqual 
-          ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК (A ⊆ B і B ⊆ A)</span>' 
-          : '<span style="color: var(--text-muted);">❌ НІ (множини відрізняються)</span>'}
+        <div style="background: rgba(9, 14, 26, 0.6); padding: 7px 10px; border-radius: 6px; border: 1px solid #1c273e;">
+          • <b>B ⊆ A (Зворотна):</b> ${onlyB.length === 0 
+            ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК</span>' 
+            : '<span style="color: var(--text-muted);">❌ НІ</span>'}
         </div>
-        <div>• <b>Диз'юнктність (A ∩ B = ∅):</b> ${isDisjoint 
-          ? '<span style="color: var(--accent); font-weight: 700;">✅ ТАК (множини не перетинаються)</span>' 
-          : `<span style="color: var(--text-muted);">❌ НІ (мають спільні елементи {${inter.join(', ')}})</span>`}
+        <div style="background: rgba(9, 14, 26, 0.6); padding: 7px 10px; border-radius: 6px; border: 1px solid #1c273e;">
+          • <b>A = B (Рівність):</b> ${isEqual 
+            ? '<span style="color: var(--success); font-weight: 700;">✅ ТАК</span> (A ⊆ B і B ⊆ A)' 
+            : '<span style="color: var(--text-muted);">❌ НІ</span>'}
+        </div>
+        <div style="background: rgba(9, 14, 26, 0.6); padding: 7px 10px; border-radius: 6px; border: 1px solid #1c273e;">
+          • <b>A ∩ B = ∅ (Диз\'юнктність):</b> ${isDisjoint 
+            ? '<span style="color: var(--accent); font-weight: 700;">✅ ТАК</span> (порожній перетин)' 
+            : `<span style="color: var(--text-muted);">❌ НІ</span> (спільні: {${inter.slice(0, 3).join(', ')}${inter.length > 3 ? '...' : ''}})`}
         </div>
       </div>
     `;
