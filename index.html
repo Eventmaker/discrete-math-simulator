@@ -213,7 +213,7 @@
     /* Operator Symbol & Mnemonic Card */
     .op-symbol-card {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 20px;
       padding: 16px 20px;
       background: linear-gradient(135deg, rgba(21, 29, 48, 0.95) 0%, rgba(13, 18, 31, 0.98) 100%);
@@ -240,10 +240,11 @@
       user-select: none;
       transition: all 0.3s ease;
       flex-shrink: 0;
+      margin-top: 4px;
     }
     .op-details { flex: 1; min-width: 0; }
     .op-title {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: 700;
       color: #fff;
       margin: 0;
@@ -252,12 +253,50 @@
       font-family: var(--code-font);
       color: #93c5fd;
       font-size: 0.95rem;
-      margin: 4px 0 6px 0;
+      margin: 4px 0 8px 0;
     }
-    .op-mnemonic {
-      font-size: 0.9rem;
+    .op-desc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .op-desc-item {
+      background: rgba(13, 20, 36, 0.7);
+      border: 1px solid #1c273e;
+      border-radius: 8px;
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .op-desc-title {
+      font-weight: 700;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .op-desc-body {
       color: var(--text-muted);
-      line-height: 1.45;
+      font-size: 0.84rem;
+    }
+    .op-desc-body b {
+      color: #f1f5f9;
+    }
+    .op-desc-body code {
+      font-family: var(--code-font);
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 0.8rem;
     }
 
     /* Venn SVG Regions & Interactions */
@@ -651,8 +690,137 @@
       color: #cbd5e1;
       line-height: 1.4;
     }
-    .comb-summary-table tr:hover td {
-      background: #10192e;
+    /* Footer Styling */
+    .app-footer {
+      margin-top: 50px;
+      padding: 30px 24px 22px;
+      background: linear-gradient(180deg, rgba(13, 18, 31, 0.5) 0%, rgba(9, 14, 26, 0.95) 100%);
+      border-top: 1px solid #1c273e;
+      border-radius: 14px;
+      box-shadow: 0 -4px 25px rgba(0, 0, 0, 0.3);
+    }
+    .footer-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .footer-left {
+      max-width: 480px;
+    }
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .footer-logo {
+      font-size: 1.4rem;
+    }
+    .footer-app-name {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #f1f5f9;
+      letter-spacing: -0.2px;
+    }
+    .footer-desc {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .footer-right {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+    }
+    .author-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(18, 24, 43, 0.8);
+      border: 1px solid #24324f;
+      padding: 10px 16px;
+      border-radius: 10px;
+    }
+    .author-avatar {
+      font-size: 1.6rem;
+      background: rgba(56, 189, 248, 0.1);
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+    .author-role {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-muted);
+    }
+    .author-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #f1f5f9;
+    }
+    .author-handle {
+      font-size: 0.78rem;
+      color: #38bdf8;
+      font-family: var(--code-font);
+    }
+    .footer-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .footer-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 15px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-github {
+      background: #1e2638;
+      color: #ffffff;
+      border: 1px solid #334155;
+    }
+    .btn-github:hover {
+      background: #28334b;
+      border-color: #38bdf8;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+    .btn-repo {
+      background: rgba(56, 189, 248, 0.12);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+    }
+    .btn-repo:hover {
+      background: rgba(56, 189, 248, 0.22);
+      border-color: #38bdf8;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+      transform: translateY(-1px);
+    }
+    .footer-bottom {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
     }
   </style>
 </head>
@@ -679,17 +847,19 @@
 
   <!-- TAB 1: SETS -->
   <section id="tab-sets" class="tab-content active">
-    <!-- Top Operator Symbol & Mnemonic Banner -->
+    <!-- Top Operator Symbol & Comprehensive Explanation Banner -->
     <div class="op-symbol-card" id="op-symbol-banner" style="margin-bottom: 20px;">
       <div class="symbol-badge" id="op-symbol-icon">∪</div>
       <div class="op-details">
         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-          <h2 class="op-title" id="op-symbol-name">Об'єднання множин (Union)</h2>
+          <h2 class="op-title" id="op-symbol-name">Об'єднання множин (Union: A ∪ B)</h2>
           <span class="badge" id="op-logic-badge" style="background: rgba(56, 189, 248, 0.2); color: var(--accent);">Логічне «АБО» (OR / ∨)</span>
         </div>
         <div class="op-formula" id="op-symbol-formal">A ∪ B = { x ∈ U | x ∈ A ∨ x ∈ B }</div>
-        <div class="op-mnemonic" id="op-symbol-mnemonic">
-          💡 <b>Мнемоніка:</b> «Чаша» відкрита догори ∪ — збираємо та насипаємо елементи з ОБОХ кіл разом!
+        
+        <!-- Comprehensive 4-Column Educational Breakdown Grid -->
+        <div class="op-desc-grid" id="op-desc-grid">
+          <!-- Dynamically populated by JS updateSets() -->
         </div>
       </div>
     </div>
@@ -1323,6 +1493,45 @@
       </div>
     </div>
   </section>
+
+  <!-- APP FOOTER & AUTHORSHIP PANEL -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div class="footer-brand">
+          <span class="footer-logo">📐</span>
+          <span class="footer-app-name">Лабораторія дискретного аналізу</span>
+        </div>
+        <p class="footer-desc">
+          Інтерактивний генеративний симулятор для вивчення курсу «Дискретна математика» (Теорія множин, Діаграми Ейлера-Венна, Бінарні відношення, Комбінаторика). Створено для студентів ДУІКТ, Київ.
+        </p>
+      </div>
+      <div class="footer-right">
+        <div class="author-card">
+          <div class="author-avatar">👨‍💻</div>
+          <div class="author-info">
+            <div class="author-role">Автор та розробник</div>
+            <div class="author-name">Юрій Пітуля (<span style="color: #38bdf8;">Jurij Pitulja</span>)</div>
+            <div class="author-handle">@Eventmaker • ДУІКТ</div>
+          </div>
+        </div>
+        <div class="footer-links">
+          <a href="https://github.com/Eventmaker" target="_blank" rel="noopener noreferrer" class="footer-btn btn-github">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            <span>GitHub Профіль</span>
+          </a>
+          <a href="https://github.com/Eventmaker/discrete-math-simulator" target="_blank" rel="noopener noreferrer" class="footer-btn btn-repo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+            <span>Репозиторій проєкту</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Jurij Pitulja (Eventmaker). Ліцензія Apache 2.0 — Відкритий вихідний код.</div>
+      <div>Державний університет інформаційно-комунікаційних технологій (ДУІКТ)</div>
+    </div>
+  </footer>
 </div>
 
 <script>
@@ -1511,6 +1720,10 @@
     let opLogic = '';
     let opColor = '#38bdf8';
     let arithmeticFormula = '';
+    let opSense = '';
+    let opGeom = '';
+    let opIT = '';
+    let opMnemonicText = '';
 
     const canvasBg = document.getElementById('canvas-bg');
     const regOnlyA = document.getElementById('region-only-a');
@@ -1579,6 +1792,11 @@
         opColor = '#38bdf8';
         arithmeticFormula = `|A ∪ B| = |A| + |B| - |A ∩ B| = ${setA.length} + ${setB.length} - ${inter.length} = <b>${union.length}</b>`;
 
+        opSense = `<b>A ∪ B = { x ∈ U | x ∈ A ∨ x ∈ B }</b><br>Містить усі елементи, що належать хоча б одній із множин A або B.<br>• <b>Властивості:</b> комутативність (<code>A ∪ B = B ∪ A</code>), асоціативність, ідемпотентність (<code>A ∪ A = A</code>).<br>• <b>Потужність:</b> <code>|A ∪ B| = |A| + |B| - |A ∩ B|</code>.`;
+        opGeom = `Суцільне зафарбування обох кіл A та B разом із центральною лінзою перекриття. Представляє сукупну об'єднану площу двох дисків на площині універсуму U.`;
+        opIT = `• <b>SQL:</b> <code>UNION</code> (об'єднання вибірок з дедуплікацією) або <code>UNION ALL</code>.<br>• <b>Python:</b> бінарний оператор <code>A | B</code> або метод <code>A.union(B)</code>.<br>• <b>Пошукові системи:</b> оператор <code>OR</code> у запитах пошуку.`;
+        opMnemonicText = `Символ <b>∪</b> нагадує «чашу» або кошик, відкритий догори — зсипаємо все з обох множин в одне спільне сховище!`;
+
         regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.45)');
         regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
         regOnlyA.setAttribute('stroke', '#38bdf8');
@@ -1607,6 +1825,11 @@
           ? `|A ∩ B| = <b>0</b> (Множини диз'юнктні: спільних елементів немає, переріз порожній ∅)`
           : `|A ∩ B| = спільні елементи обох кіл = <b>${inter.length}</b>`;
 
+        opSense = `<b>A ∩ B = { x ∈ U | x ∈ A ∧ x ∈ B }</b><br>Містить виключно ті елементи, які одночасно входять і до A, і до B.<br>• <b>Властивості:</b> комутативність, асоціативність, дистрибутивність.<br>• <b>Диз'юнктність:</b> якщо <code>A ∩ B = ∅</code>, множини не перетинаються.`;
+        opGeom = `Центральна лінзоподібна зона взаємного перекриття двох кіл. Тільки та спільна геометрична область, що належить контурам A і B одночасно.`;
+        opIT = `• <b>SQL:</b> оператор <code>INTERSECT</code> або реляційний <code>INNER JOIN ... ON A.id = B.id</code>.<br>• <b>Python:</b> бінарний оператор <code>A & B</code> або метод <code>A.intersection(B)</code>.<br>• <b>Кібербезпека:</b> фільтрація прав доступу (активна сесія AND валідний 2FA токен).`;
+        opMnemonicText = `Символ <b>∩</b> нагадує «арку» або «шапку» (англ. <i>Cap</i>) — захищає лише те, що опинилося одночасно під обома склепіннями!`;
+
         regInter.setAttribute('fill', 'rgba(16, 185, 129, 0.75)');
         regInter.setAttribute('filter', 'url(#glow-green)');
         regInter.setAttribute('stroke', '#10b981');
@@ -1620,10 +1843,15 @@
         opSymbol = '\\';
         opName = "Різниця множин (Difference: A \\ B)";
         opFormal = "A \\ B = { x ∈ U | x ∈ A ∧ x ∉ B } = A ∩ B̅";
-        opMnemonic = "💡 <b>Мнемоніка:</b> «Відсікання» — беремо коло A і ніжками циркуля вирізаємо все, що торкається кола B. Чисті елементи A!";
+        opMnemonic = "💡 <b>Мнемоніка:</b> «Відсікання» — беремо коло A і ножницями вирізаємо все, що торкається кола B. Чисті елементи A!";
         opLogic = "Різниця (AND NOT) | Python: A - B";
         opColor = '#38bdf8';
         arithmeticFormula = `|A \\ B| = |A| - |A ∩ B| = ${setA.length} - ${inter.length} = <b>${onlyA.length}</b>`;
+
+        opSense = `<b>A \\ B = { x ∈ U | x ∈ A ∧ x ∉ B } = A ∩ B̅</b><br>Містить елементи першої множини A, які не входять до другої множини B.<br>• <b>Антикомутативність:</b> <code>A \\ B ≠ B \\ A</code> (порядок операндів має значення!).<br>• <b>Потужність:</b> <code>|A \\ B| = |A| - |A ∩ B|</code>.`;
+        opGeom = `Лівий серпоподібний півмісяць кола A. Повне коло A, з якого вирізано («відкушено») центральну спільну лінзу перетину з колом B.`;
+        opIT = `• <b>SQL:</b> <code>EXCEPT</code> (PostgreSQL) / <code>MINUS</code> (Oracle) або <code>LEFT JOIN ... WHERE B.id IS NULL</code>.<br>• <b>Python:</b> оператор <code>A - B</code> або метод <code>A.difference(B)</code>.<br>• <b>Git / CRM:</b> команда <code>git diff</code>; сегментація бази (зареєстровані, але без купівель).`;
+        opMnemonicText = `Зворотний слеш <b>\\</b> як скальпель: відтинає будь-яку дотичність кола B від чистої власної території множини A!`;
 
         regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.7)');
         regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
@@ -1643,6 +1871,11 @@
         opColor = '#a855f7';
         arithmeticFormula = `|B \\ A| = |B| - |A ∩ B| = ${setB.length} - ${inter.length} = <b>${onlyB.length}</b>`;
 
+        opSense = `<b>B \\ A = { x ∈ U | x ∈ B ∧ x ∉ A } = B ∩ A̅</b><br>Суверенні елементи множини B, до яких не входить жоден елемент з A.<br>• <b>Антисиметрія:</b> демонструє нееквівалентність віднімання (дзеркальний контраст до A \\ B).<br>• <b>Потужність:</b> <code>|B \\ A| = |B| - |A ∩ B|</code>.`;
+        opGeom = `Правий серпоподібний півмісяць кола B. Територія другого кола без центральної лінзи перекриття з колом A.`;
+        opIT = `• <b>SQL:</b> <code>RIGHT JOIN ... WHERE A.id IS NULL</code> або <code>SELECT ... FROM B EXCEPT SELECT ... FROM A</code>.<br>• <b>Python:</b> вираз <code>B - A</code> або метод <code>B.difference(A)</code>.<br>• <b>Деплой ПЗ:</b> нові залежності або пакети версії B, відсутні в попередній версії A.`;
+        opMnemonicText = `Дзеркальне відсікання: «Суто B» — захищена суверенна територія правої множини без домішок елементів лівої!`;
+
         regOnlyB.setAttribute('fill', 'rgba(168, 85, 247, 0.7)');
         regOnlyB.setAttribute('filter', 'url(#glow-purple)');
         regOnlyB.setAttribute('stroke', '#a855f7');
@@ -1660,6 +1893,11 @@
         opLogic = "XOR (Виключне АБО) | Python: A ^ B";
         opColor = '#f59e0b';
         arithmeticFormula = `|A △ B| = |A \\ B| + |B \\ A| = ${onlyA.length} + ${onlyB.length} = <b>${res.length}</b> (виключено центр: |A ∩ B| = ${inter.length})`;
+
+        opSense = `<b>A △ B = (A \\ B) ∪ (B \\ A) = (A ∪ B) \\ (A ∩ B)</b><br>Елементи, що належать рівно одній із множин. Відповідає логічній операції <b>XOR (виключне АБО / ⊕)</b>.<br>• <b>Властивості:</b> комутативність (<code>A △ B = B △ A</code>), <code>A △ A = ∅</code>, <code>A △ ∅ = A</code>.<br>• <b>Потужність:</b> <code>|A △ B| = |A| + |B| - 2|A ∩ B|</code>.`;
+        opGeom = `Підсвічені обидва зовнішні півмісяці (лівий і правий), а центральна лінза спільного перетину вибита і залишається темною.`;
+        opIT = `• <b>Криптографія:</b> потокові шифри (One-Time Pad, Salsa20) та гешування базуються на бітовому XOR.<br>• <b>RAID-масиви:</b> відновлення бітів парності в RAID 5/6.<br>• <b>Синхронізація:</b> двостороння реплікація БД, пошук розбіжностей.<br>• <b>Python:</b> <code>A ^ B</code> або <code>A.symmetric_difference(B)</code>.`;
+        opMnemonicText = `Символ дельти <b>△</b> (або ⊕) — суворий фейсконтроль: «Або ти в A, або в B! Якщо в обох одразу — вилітаєш!».`;
 
         regOnlyA.setAttribute('fill', 'rgba(56, 189, 248, 0.6)');
         regOnlyA.setAttribute('filter', 'url(#glow-cyan)');
@@ -1684,6 +1922,11 @@
         opLogic = "Логічне «НЕ» (NOT / ¬) | Python: U - A";
         opColor = '#f59e0b';
         arithmeticFormula = `|A̅| = |U| - |A| = ${U.length} - ${setA.length} = <b>${res.length}</b> (елементи B \\ A: ${onlyB.length}, поза колами: ${outside.length})`;
+
+        opSense = `<b>A̅ = U \\ A = { x ∈ U | x ∉ A }</b><br>Абсолютне доповнення множини A до універсуму U (інверсія предиката приналежності).<br>• <b>Закони де Моргана:</b> <code>(A ∪ B)' = A' ∩ B'</code> та <code>(A ∩ B)' = A' ∪ B'</code>.<br>• <b>Фундаментальні закони:</b> подвійне заперечення <code>A̿ = A</code>; виключене третє <code>A ∪ A̅ = U</code>; <code>A ∩ A̅ = ∅</code>.`;
+        opGeom = `Вся площина прямокутника універсуму U та правий півмісяць B підсвічені бурштиновим світлом, тоді як коло A стає затемненою «порожнечею» з пунктирним контуром.`;
+        opIT = `• <b>Мережі / IP:</b> Wildcard Mask у Cisco ACL (зворотна маска підмережі для інверсії IP-діапазонів).<br>• <b>SQL:</b> предикати <code>WHERE id NOT IN (...)</code> або <code>NOT EXISTS (...)</code>.<br>• <b>Пошук:</b> мінус-слова (<code>-слово</code>) для фільтрації шуму.<br>• <b>Python:</b> <code>U - A</code>.`;
+        opMnemonicText = `Штрих над літерою (A') або риска (A̅) — абсолютне заперечення (NOT): «Увесь світ універсуму, крім самого кола A!».`;
 
         if (canvasBg) {
           canvasBg.setAttribute('stroke', '#f59e0b');
@@ -1719,6 +1962,11 @@
         opColor = '#f59e0b';
         arithmeticFormula = `|B̅| = |U| - |B| = ${U.length} - ${setB.length} = <b>${res.length}</b> (елементи A \\ B: ${onlyA.length}, поза колами: ${outside.length})`;
 
+        opSense = `<b>B̅ = U \\ B = { x ∈ U | x ∉ B }</b><br>Абсолютне доповнення множини B до універсуму U.<br>• Разом із B утворює повне розбиття універсуму: <code>B ∪ B̅ = U</code> та <code>B ∩ B̅ = ∅</code>.<br>• <b>Закони де Моргана:</b> <code>(A ∩ B)' = A' ∪ B'</code>.`;
+        opGeom = `Підсвічена вся площина прямокутника U та лівий півмісяць A. Коло B виключене з підсвічування та відображається пунктирним контуром.`;
+        opIT = `• <b>Оптимізація компіляторів:</b> спрощення логічних умов через закони де Моргана (<code>!(x && y) => !x || !y</code>) для прискорення розгалужень.<br>• <b>Контроль доступу (RBAC):</b> чорні списки операцій (дозволено все, окрім операцій множини B).<br>• <b>Python:</b> <code>U - B</code>.`;
+        opMnemonicText = `Повна дзеркальна інверсія кола B: «Усе буття універсуму мінус елементи множини B».`;
+
         if (canvasBg) {
           canvasBg.setAttribute('stroke', '#f59e0b');
           canvasBg.setAttribute('stroke-width', '2');
@@ -1752,6 +2000,11 @@
         opMnemonic = "💡 <b>Мнемоніка:</b> Власна строга підмножина A ⊂ B: коло A <b>повністю поміщається</b> всередині B, але в B обов'язково є хоча б один додатковий елемент!";
         opLogic = isSubset ? "A ⊆ B : ІСТИНА (Включення виконується)" : "A ⊄ B : ХИБА (Включення не виконується)";
         opColor = isSubset ? '#10b981' : '#ef4444';
+
+        opSense = `<b>A ⊆ B ⇔ ∀x (x ∈ A ⇒ x ∈ B) ⇔ A \\ B = ∅</b><br>Відношення включення: кожний елемент A обов'язково належить B.<br>• <b>Власна (строга) підмножина:</b> <code>A ⊂ B ⇔ (A ⊆ B ∧ A ≠ B)</code> (в B є елементи, відсутні в A).<br>• <b>Рівність множин:</b> <code>A = B ⇔ (A ⊆ B ∧ B ⊆ A)</code> (взаємне включення).`;
+        opGeom = `При виконанні умови (A ⊆ B) коло A повністю знаходиться всередині контуру B (його лівий півмісяць порожній: A \\ B = ∅). При порушенні — лівий півмісяць спалахує червоним контуром (помилка: елементи «витекли» назовні).`;
+        opIT = `• <b>ООП / Архітектура:</b> принцип підстановки Лісков (LSP) — поведінка нащадка є підмножиною контракту (<code>Subclass ⊆ BaseClass</code>).<br>• <b>Системи типів:</b> субтипізація в TypeScript та Rust.<br>• <b>Python:</b> метод <code>A.issubset(B)</code> або оператор <code>A <= B</code> (строгий <code>A < B</code>).<br>• <b>Безпека:</b> перевірка валідності API Scope токена.`;
+        opMnemonicText = `Знак <b>⊆</b> нагадує «менше або дорівнює» (≤) — множина A повністю вкладається всередину B і не виходить за її межі!`;
 
         if (isSubset) {
           arithmeticFormula = isProperSubset
@@ -1798,7 +2051,31 @@
     }
     document.getElementById('op-symbol-name').textContent = opName;
     document.getElementById('op-symbol-formal').textContent = opFormal;
-    document.getElementById('op-symbol-mnemonic').innerHTML = opMnemonic;
+    const opMnemonicElem = document.getElementById('op-symbol-mnemonic');
+    if (opMnemonicElem) opMnemonicElem.innerHTML = opMnemonic;
+
+    // Render 4-Column Educational Breakdown Grid
+    const descGrid = document.getElementById('op-desc-grid');
+    if (descGrid) {
+      descGrid.innerHTML = `
+        <div class="op-desc-item">
+          <div class="op-desc-title" style="color: ${opColor};">🎯 Математичний зміст</div>
+          <div class="op-desc-body">${opSense}</div>
+        </div>
+        <div class="op-desc-item">
+          <div class="op-desc-title" style="color: #38bdf8;">📐 Геометричний зміст</div>
+          <div class="op-desc-body">${opGeom}</div>
+        </div>
+        <div class="op-desc-item">
+          <div class="op-desc-title" style="color: #34d399;">💻 Застосування в IT / SQL</div>
+          <div class="op-desc-body">${opIT}</div>
+        </div>
+        <div class="op-desc-item">
+          <div class="op-desc-title" style="color: #f59e0b;">💡 Мнемоніка / Інтуїція</div>
+          <div class="op-desc-body">${opMnemonicText}</div>
+        </div>
+      `;
+    }
     const logicBadge = document.getElementById('op-logic-badge');
     if (logicBadge) {
       logicBadge.textContent = opLogic;
